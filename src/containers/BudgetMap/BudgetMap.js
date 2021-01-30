@@ -64,7 +64,8 @@ class BudgetMap extends Component{
     
     render(){
         let districts = '';
-        if(this.props.districts){                        
+        console.log(process.env);
+        if(this.props.districts){                  
             districts = 
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_TOKEN }}                    
