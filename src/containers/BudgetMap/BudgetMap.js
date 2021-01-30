@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import GoogleMapReact from 'google-map-react';
-import {token} from '../../store/actions/token'
 
 const DEFAULT_CENTER = { lat: 40.635, lng: -73.94 };
 
