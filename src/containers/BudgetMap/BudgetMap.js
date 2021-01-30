@@ -63,12 +63,11 @@ const handleApiLoaded = (map, maps, coords, selectedDistricts, councilMembers) =
 class BudgetMap extends Component{
     
     render(){
-        let districts = '';
-        console.log(process.env);
+        let districts = '';        
         if(this.props.districts){                  
             districts = 
                 <GoogleMapReact
-                    bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_TOKEN }}                    
+                    bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN }}                    
                     defaultCenter={DEFAULT_CENTER}                 
                     defaultZoom={11}
 
