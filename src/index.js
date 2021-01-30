@@ -1,13 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import thunk from 'redux-thunk';
+import {Provider} from 'react-redux';
+import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import participatoryBudgetReducer from './store/reducers/initBudget';
+import calculateSubsetsReducer from './store/reducers/calculateSubsets';
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const rootReducer = combineReducers({
+  participatoryBudget: participatoryBudgetReducer,
+  subsets: calculateSubsetsReducer
+})
+
+const store = createStore(rootReducer,composeEnhancers(
+  applyMiddleware(thunk))
+);
+
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 

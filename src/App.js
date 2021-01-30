@@ -1,23 +1,16 @@
 import logo from './logo.svg';
 import './App.css';
+import VisualizationManager from './containers/VisualizationManager/VisualizationManager'
+import BudgetMap from './containers/BudgetMap/BudgetMap'
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Welcome to this Participatory Budget viewer. Click on options below to find items on the participatory budget from the years 2012-2017.</h1>
+      <div className="row">
+        <VisualizationManager />
+        <BudgetMap />
+      </div>      
     </div>
   );
 }
