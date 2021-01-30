@@ -1,0 +1,52 @@
+0: "Art, Community, and Culture"
+1: "Arts, Culture & Community"
+2: "Community Facilities"
+3: "Cultural Institutions"
+4: "Culture and Community Facilities"
+5: "District-Wide Priorities"
+6: "Education"
+7: "Environment"
+8: "Environment, Health, Public Safety"
+9: "Environmental Protection"
+10: "Health and Environment"
+11: "Housing"
+12: "Libraries"
+13: "Parks"
+14: "Parks & Recreation"
+15: "Parks and Recreation"
+16: "Parks, Environment and Recreation"
+17: "Public Health and Environment"
+18: "Public Housing"
+19: "Public Safety"
+20: "Public Safety & Public Health"
+21: "Public Schools and Libraries"
+22: "Recreation and Community"
+23: "Sanitation"
+24: "Save Your Money For Next Cycle"
+25: "Schools"
+26: "Schools and Libraries"
+27: "Senior and Social Services"
+28: "Seniors"
+29: "Streets"
+30: "Streets and Sidewalks"
+31: "Streets and Transportation"
+32: "Transit"
+33: "Transportation"
+34: "Transportation and Public Safety"
+35: "Youth"
+36: "Youth "
+37: "Youth and Education"
+
+Culture and Community Facilities
+Schools and Education
+Environment
+Housing
+Parks and Recreation
+Public Health
+Public Safety
+Sanitation
+Seniors
+Streets and Sidewalks
+Transit and Transportation
+Youth
+Previously funded

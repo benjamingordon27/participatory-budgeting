@@ -8,12 +8,14 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import participatoryBudgetReducer from './store/reducers/initBudget';
 import calculateSubsetsReducer from './store/reducers/calculateSubsets';
+import setMap from './store/reducers/setMap';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
   participatoryBudget: participatoryBudgetReducer,
-  subsets: calculateSubsetsReducer
+  subsets: calculateSubsetsReducer,
+  setMap: setMap
 })
 
 const store = createStore(rootReducer,composeEnhancers(

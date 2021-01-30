@@ -6,7 +6,7 @@ import Dropdown from '../../components/UI/Dropdown/Dropdown';
 import Button from '../../components/UI/Button/Button';
 import BudgetItem from '../../components/BudgetItem/BudgetItem'
 
-class VisualizationManager extends Component {
+class ButtonManager extends Component {
 
     state = {
         selectedYear: '',
@@ -15,11 +15,30 @@ class VisualizationManager extends Component {
     }
 
     componentDidMount(){        
-        this.props.onInitBudget();
-        if(this.props.participatoryBudget && this.props.districts && this.props.councilMembers && this.props.itemCategories){
-            this.setState({selectedYear: this.props.itemYears[0],selectedCategory: this.props.itemCategories[0],selectedDistrict: this.props.itemDistricts[0]});
-        }
+        this.props.onInitBudget();        
     }
+
+    getStateSelectedYear(){        
+        if(this.state.selectedYear !== '')
+            return this.state.selectedYear
+        else
+            return this.props.itemYears[0]
+    }
+
+    getStateSelectedCategory(){
+        if(this.state.selectedCategory !== '')
+            return this.state.selectedCategory
+        else
+            return this.props.itemCategories[0]
+    }
+
+    getStateSelectedDistrict(){
+        if(this.state.selectedDistrict !== '')
+            return this.state.selectedDistrict
+        else
+            return this.props.itemDistricts[0]
+    }
+
 
     itemsByYear = (event) => {        
         this.setState({selectedYear: event.target.value})
@@ -37,20 +56,26 @@ class VisualizationManager extends Component {
         let data ='';
         if(this.props.loading){
             data = <Spinner />;
-        }        
+        }
+
+        console.log('[VisualizationManager.js] State', this.props)
+        // if(this.props.participatoryBudget){
+        //     console.log("Items with points",this.props.participatoryBudget.filter(item => item.latitude && item.longitude))
+        //     // console.log("Category\n", this.props.itemCategories)
+        // }
         
         return (
             <div>                
                 {this.props.participatoryBudget && this.props.districts && this.props.councilMembers && this.props.itemCategories ?
                     <div>
-                        <Button message={'Top 10 Budget Items by Cost'}/><br></br>
-                        <Button message={'Item with highest cost'}/><br></br>                        
+                        <Button message={'Top 10 Budget Items by Cost'}/>
+                        <Button message={'Item with highest cost'}/>                        
                         <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>
-                        <Button clicked = {() => this.props.onBudgetByDistrict(this.props.participatoryBudget, this.state.selectedDistrict)} message={'Submit District'}/>
+                        <Button clicked = {() => this.props.onBudgetByDistrict(this.props.participatoryBudget, this.getStateSelectedDistrict())} message={'Submit District'}/>
                         <Dropdown message={'Items by year'} title={'Year'} list={this.props.itemYears} handleChange={this.itemsByYear}/>
-                        <Button clicked = {() => this.props.onBudgetByYear(this.props.participatoryBudget, this.state.selectedYear)} message={'Submit Year'}/>
+                        <Button clicked = {() => this.props.onBudgetByYear(this.props.participatoryBudget, this.getStateSelectedYear())} message={'Submit Year'}/>
                         <Dropdown message={'Items by category'} title={'Category'} list={this.props.itemCategories} handleChange={this.itemsByCategory}/>
-                        <Button clicked = {() => this.props.onBudgetByCategory(this.props.participatoryBudget, this.state.selectedCategory)} message={'Submit Category'}/>
+                        <Button clicked = {() => this.props.onBudgetByCategory(this.props.participatoryBudget, this.getStateSelectedCategory())} message={'Submit Category'}/>
                     </div>
                 :null}
                 {data}
@@ -86,4 +111,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(VisualizationManager);
+export default connect(mapStateToProps,mapDispatchToProps)(ButtonManager);

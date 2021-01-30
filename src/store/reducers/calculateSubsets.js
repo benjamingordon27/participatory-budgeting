@@ -3,6 +3,7 @@ import {updateObject} from '../utility';
 
 const initialState = {            
     selectedBudgetItems: null,
+    selectedDistricts: null
 }
 
 const sortByCategory = (participatoryBudget, category) =>{

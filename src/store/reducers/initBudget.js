@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../utility';
+import { similarSubstring } from 'similar-substring';
 
 const initialState = {    
     currItem: null,
@@ -13,7 +14,9 @@ const initialState = {
     itemCategories: null,
     itemYears: null,
     itemDistricts: null,
-    selectedDistricts: [5,9,11]
+    selectedDistricts: null,
+
+    loaded: false,
 }
 
 const initCategory = (participatoryBudget) => {
@@ -22,6 +25,19 @@ const initCategory = (participatoryBudget) => {
     keys.forEach(function(key){
         categories.push(participatoryBudget[key].category);
     });    
+    // var smallerListOfCategories = ['Culture and Community Facilities','Schools and Education','Environment',
+    //     'Housing','Parks and Recreation','Public Health','Public Safety','Sanitation','Seniors','Streets and Sidewalks','Transit and Transportation','Youth']
+
+    // var uniqueCategories = categories.filter((v, i, a) => a.indexOf(v) === i).sort();
+
+    // for(var category in uniqueCategories){
+    //     var similarities = [];
+    //     for(var smallerListItem in smallerListOfCategories){
+    //         similarities.push(similarSubstring(uniqueCategories[category], smallerListOfCategories[smallerListItem]))            
+    //     }
+    //     // console.log('Category: '+ uniqueCategories[category],similarities)
+    // }
+
     return categories.filter((v, i, a) => a.indexOf(v) === i).sort();
 }
 
@@ -123,7 +139,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_PARTICIPATORY_BUDGET_ITEM_FAIL: return updateObject(state, {error: action.error, loading: false})    
         
         case actionTypes.FETCH_DISTRICTS_START: return updateObject(state, {districtsLoading: true})
-        case actionTypes.FETCH_DISTRICTS_SUCCESS: return updateObject(state, {districtsLoading: false, districts: JSON.parse(action.districts)})            
+        case actionTypes.FETCH_DISTRICTS_SUCCESS: return updateObject(state, {districtsLoading: false, districts: JSON.parse(action.districts), loaded: true})            
         case actionTypes.FETCH_DISTRICTS_FAIL: return updateObject(state, {error: action.error, districtsLoading: false})
         default:
             return state;

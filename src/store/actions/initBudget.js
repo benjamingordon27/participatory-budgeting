@@ -25,20 +25,6 @@ export const fetchCouncilMemberFail = (error) => {
     }
 }
 
-export const fetchParticipatoryBudgetItemStart = () => {
-    return {
-        type: actionTypes.FETCH_PARTICIPATORY_BUDGET_ITEM_START
-    }
-
-}
-
-export const fetchParticipatoryBudgetItemSuccess = (data) => {
-    return {
-        type: actionTypes.FETCH_PARTICIPATORY_BUDGET_ITEM_SUCCESS,
-        data: data
-    }
-}
-
 export const fetchDistrictsFail = (error) => {
     return {
         type: actionTypes.FETCH_DISTRICTS_FAIL,
@@ -67,24 +53,38 @@ export const fetchParticipatoryBudgetItemFail = (error) => {
     }
 }
 
+export const fetchParticipatoryBudgetItemStart = () => {
+    return {
+        type: actionTypes.FETCH_PARTICIPATORY_BUDGET_ITEM_START
+    }
+
+}
+
+export const fetchParticipatoryBudgetItemSuccess = (data) => {
+    return {
+        type: actionTypes.FETCH_PARTICIPATORY_BUDGET_ITEM_SUCCESS,
+        data: data
+    }
+}
+
 export const initBudget = () => {
     return dispatch => {
         dispatch(fetchCouncilMemberStart());
             axios.get(getRequests.cityCouncilMembers)
                 .then(response => {
-                    console.log("COUNCIL MEMBER CALL",response.data)
+                    // console.log("COUNCIL MEMBER CALL",response.data)
                     dispatch(fetchCouncilMemberSuccess(JSON.stringify(response.data)))                
                 }).then( () => {
                     dispatch(fetchParticipatoryBudgetItemStart());
                     axios.get(getRequests.participatoryBudget)
                         .then(response => {
-                            console.log(response.data)
+                            // console.log(response.data)
                             dispatch(fetchParticipatoryBudgetItemSuccess(JSON.stringify(response.data)))             
                         }).then( () => {
                             dispatch(fetchDistrictsStart());
                             axios.get(getRequests.cityCouncilDistricts)
                             .then(response => {
-                                console.log('FETCH DISTRICTS',response.data);
+                                // console.log('FETCH DISTRICTS',response.data);
                                 dispatch(fetchDistrictsSuccess(JSON.stringify(response.data)))
                             }).catch(error => dispatch(fetchDistrictsFail(error)))
                         })

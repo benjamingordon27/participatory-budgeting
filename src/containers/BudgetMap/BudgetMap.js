@@ -1,88 +1,43 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import GoogleMapReact from 'google-map-react';
-
-const DEFAULT_CENTER = { lat: 40.635, lng: -73.94 };
-
-const attachPolygonInfoWindow = (map,maps,polygon) => {
-    var infoWindow = new maps.InfoWindow();
-    maps.event.addListener(polygon, 'click', function (e) {
-        infoWindow.setContent("Polygon Name");
-        var latLng = e.latLng;
-        infoWindow.setPosition(latLng);
-        infoWindow.open(map);
-    });
-}
-
-const addListenersOnPolygon = (map,maps,polygon, info) => {
-    var infoWindow = new maps.InfoWindow();    
-    maps.event.addListener(polygon, 'click', function (event) {
-        infoWindow.setContent('District: '+polygon.indexID + '<br>Council Member: '+ info[0].name+ '<br>Political Party: '+ info[0].political_party);
-        var latLng = event.latLng;
-        infoWindow.setPosition(latLng);
-        infoWindow.open(map);
-        // alert(polygon.indexID);
-    });  
-  }
-
-const handleApiLoaded = (map, maps, coords, selectedDistricts, councilMembers) => {
-    let allDistrictPolygons = {};
-    if(coords.features){                
-        Object.keys(coords.features).map(key => {  
-            let districtPolygons = [];
-            let currDistrict = coords.features[key].properties.coun_dist;
-            coords.features[key].geometry.coordinates.map(arr => {   
-                let coordArr = [];     
-                arr[0].map(coordinate => coordArr.push({lat: coordinate[1], lng: coordinate[0]}))        
-                
-                var councilDistrictPolygon = new maps.Polygon({
-                    paths: coordArr,
-                    strokeColor: "#FF0000",
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: "#FF0000",
-                    fillOpacity: 0.35,
-                    indexID: currDistrict,
-                });            
-                                
-                districtPolygons.push(councilDistrictPolygon);                 
-                var districtInfo = councilMembers.filter(item => item.district === currDistrict);                                
-
-                addListenersOnPolygon(map,maps,councilDistrictPolygon, districtInfo);
-            });            
-            allDistrictPolygons[key] = {district: coords.features[key].properties.coun_dist,polygons: districtPolygons};
-        });
-    }            
-    Object.keys(allDistrictPolygons).map(key => {        
-        // if(selectedDistricts.includes(Number(allDistrictPolygons[key].district)))
-            allDistrictPolygons[key].polygons.map(polygon => polygon.setMap(map))    
-    })
-}
-
+import Spinner from '../../components/UI/Spinner/Spinner';
+import * as actions from '../../store/actions/index';
 
 class BudgetMap extends Component{
+    state = {
+        firstPageLoad: false,
+        
+    } 
+
+    componentDidMount(){
+        if(this.props.districts){
+            this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        console.log('did we update?', this.props, this.state)
+
+        if(!this.state.firstPageLoad && this.props.loaded){
+            this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
+            this.setState({firstPageLoad: true})
+        }
+
+        if((prevProps.selectedBudgetItems !== this.props.selectedBudgetItems)){
+            console.log('selected budget items has changed');
+            let districts ='';            
+            console.log('RE RENDER');
+            this.props.onResetMap();            
+            this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
+            
+        }        
+    }
     
     render(){
-        let districts = '';        
-        if(this.props.districts){                  
-            districts = 
-                <GoogleMapReact
-                    bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN }}                    
-                    defaultCenter={DEFAULT_CENTER}                 
-                    defaultZoom={11}
-
-                    yesIWantToUseGoogleMapApiInternals                    
-                    onGoogleApiLoaded={({ map, maps }) => {
-
-                            handleApiLoaded(map, maps, this.props.districts, this.props.selectedDistricts, this.props.councilMembers)
-                    }} 
-
-                ></GoogleMapReact>            
-        }        
-
         return(
-            <div style={{ height: '100vh', width: '100%' }}>
-                {districts}
+            <div style={{ height: '87vh', width: '100%' }}>
+                {this.props.map}
             </div>            
         );
     }
@@ -91,16 +46,26 @@ class BudgetMap extends Component{
 const mapStateToProps = state => {
     return {
         currItem: state.participatoryBudget.currItem,
-        participatoryBudget: state.participatoryBudget.participatoryBudget,
-        loading: state.participatoryBudget.loading,
+        participatoryBudget: state.participatoryBudget.participatoryBudget,        
         councilMemberLoading: state.participatoryBudget.councilMemberLoading,
         error: state.participatoryBudget.error,
         councilMembers: state.participatoryBudget.councilMembers,
         districts: state.participatoryBudget.districts,
         districtsLoading: state.participatoryBudget.districtsLoading,   
-        selectedDistricts: state.participatoryBudget.selectedDistricts,     
-
+        selectedDistricts: state.participatoryBudget.selectedDistricts,   
+        loaded: state.participatoryBudget.loaded,
+        
+        map: state.setMap.map,        
+        selectedBudgetItems: state.subsets.selectedBudgetItems,
     }
 }
 
-export default connect(mapStateToProps)(BudgetMap);
+const mapDispatchToProps = dispatch => {
+    return {        
+        onSetMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems) => dispatch(actions.setMap(districts, selectedDistricts, councilMembers, selectedBudgetItems)),  
+        onUpdateMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems) => dispatch(actions.updateMap(districts, selectedDistricts, councilMembers, selectedBudgetItems)),  
+        onResetMap: () => dispatch(actions.resetMap()),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetMap);

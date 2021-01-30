@@ -13,3 +13,7 @@ export const FETCH_DISTRICTS_FAIL = 'FETCH_DISTRICTS_FAIL';
 export const BUDGET_BY_YEAR = 'BUDGET_BY_YEAR';
 export const BUDGET_BY_DISTRICT = 'BUDGET_BY_DISTRICT';
 export const BUDGET_BY_CATEGORY = 'BUDGET_BY_CATEGORY';
+
+export const SET_MAP = 'SET_MAP';
+export const UPDATE_MAP = 'UPDATE_MAP';
+export const RESET_MAP = 'RESET_MAP';
