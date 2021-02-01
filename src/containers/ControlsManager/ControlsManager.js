@@ -4,9 +4,8 @@ import * as actions from '../../store/actions/index';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import Dropdown from '../../components/UI/Dropdown/Dropdown';
 import Button from '../../components/UI/Button/Button';
-import BudgetItem from '../../components/BudgetItem/BudgetItem'
 
-class ButtonManager extends Component {
+class ControlsManager extends Component {
 
     state = {
         selectedYear: '',
@@ -57,24 +56,21 @@ class ButtonManager extends Component {
         if(this.props.loading){
             data = <Spinner />;
         }
-
-        console.log('[VisualizationManager.js] State', this.props)
-        // if(this.props.participatoryBudget){
-        //     console.log("Items with points",this.props.participatoryBudget.filter(item => item.latitude && item.longitude))
-        //     // console.log("Category\n", this.props.itemCategories)
-        // }
         
+        console.log(this.props, this.state)
+
         return (
             <div>                
                 {this.props.participatoryBudget && this.props.districts && this.props.councilMembers && this.props.itemCategories ?
                     <div>
-                        <Button message={'Top 10 Budget Items by Cost'}/>
-                        <Button message={'Item with highest cost'}/>                        
-                        <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>
-                        <Button clicked = {() => this.props.onBudgetByDistrict(this.props.participatoryBudget, this.getStateSelectedDistrict())} message={'Submit District'}/>
+                        <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>                        
                         <Dropdown message={'Items by year'} title={'Year'} list={this.props.itemYears} handleChange={this.itemsByYear}/>
-                        <Button clicked = {() => this.props.onBudgetByYear(this.props.participatoryBudget, this.getStateSelectedYear())} message={'Submit Year'}/>
                         <Dropdown message={'Items by category'} title={'Category'} list={this.props.itemCategories} handleChange={this.itemsByCategory}/>
+
+                        <Button message={'Top 10 Budget Items by Cost'}/>
+                        <Button message={'Item with highest cost'}/>
+                        <Button clicked = {() => this.props.onBudgetByDistrict(this.props.participatoryBudget, this.getStateSelectedDistrict())} message={'Submit District'}/>
+                        <Button clicked = {() => this.props.onBudgetByYear(this.props.participatoryBudget, this.getStateSelectedYear())} message={'Submit Year'}/>
                         <Button clicked = {() => this.props.onBudgetByCategory(this.props.participatoryBudget, this.getStateSelectedCategory())} message={'Submit Category'}/>
                     </div>
                 :null}
@@ -111,4 +107,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(ButtonManager);
+export default connect(mapStateToProps,mapDispatchToProps)(ControlsManager);

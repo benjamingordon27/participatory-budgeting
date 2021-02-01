@@ -17,17 +17,12 @@ class BudgetMap extends Component{
     }
 
     componentDidUpdate(prevProps, prevState){
-        console.log('did we update?', this.props, this.state)
-
         if(!this.state.firstPageLoad && this.props.loaded){
             this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
             this.setState({firstPageLoad: true})
         }
 
         if((prevProps.selectedBudgetItems !== this.props.selectedBudgetItems)){
-            console.log('selected budget items has changed');
-            let districts ='';            
-            console.log('RE RENDER');
             this.props.onResetMap();            
             this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
             

@@ -9,8 +9,7 @@ const initialState = {
 
 const DEFAULT_CENTER = { lat: 40.635, lng: -73.94 };
 
-const renderMarkers = (map, maps, budget) => {
-    console.log('budget', budget)
+const renderMarkers = (map, maps, budget) => {    
     budget.filter(item => item.latitude && item.longitude).map(item => {
         let marker = new maps.Marker({
             position: {lat: Number(item.latitude), lng: Number(item.longitude)},            

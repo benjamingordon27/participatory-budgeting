@@ -14,9 +14,9 @@ const budgetItem = (props) => {
                 <strong>Cost:</strong> {formatter.format(props.cost)}<br></br>
                 <strong>Year:</strong> {props.vote_year}<br></br>
                 <strong>Category:</strong> {props.category}<br></br>
-                <strong>Borough:</strong> {props.councilMember.borough}<br></br>
+                {/* <strong>Borough:</strong> {props.councilMember.borough}<br></br> */}
                 <strong>Council District:</strong> {props.council_district}<br></br>
-                <strong>Current Council Member:</strong> {props.councilMember.name}, {props.councilMember.political_party}
+                {/* <strong>Current Council Member:</strong> {props.councilMember.name}, {props.councilMember.political_party} */}
         </div>
     );    
 }
