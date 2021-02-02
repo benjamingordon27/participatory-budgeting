@@ -17,3 +17,4 @@ export const BUDGET_BY_CATEGORY = 'BUDGET_BY_CATEGORY';
 export const SET_MAP = 'SET_MAP';
 export const UPDATE_MAP = 'UPDATE_MAP';
 export const RESET_MAP = 'RESET_MAP';
+export const ZOOM_IN = 'ZOOM_IN';

@@ -2,12 +2,19 @@ import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../utility';
 import GoogleMapReact from 'google-map-react';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import MapMarker from '../../components/UI/MapMarker/MapMarker';
+import Polygon from '../../components/UI/Polygon/Polygon';
+
+import Map from '../../components/Map/Map';
+
+const DEFAULT_CENTER = { lat: 40.635, lng: -73.94 };
 
 const initialState = {
     map: <Spinner />,
+    mapProps: {},
+    zoom: 11,
+    markers: [],
 }
-
-const DEFAULT_CENTER = { lat: 40.635, lng: -73.94 };
 
 const renderMarkers = (map, maps, budget) => {    
     budget.filter(item => item.latitude && item.longitude).map(item => {
@@ -33,6 +40,7 @@ const renderMarkers = (map, maps, budget) => {
 
 const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers) => {
     let allDistrictPolygons = {};
+    // let polygonCoords = [];
     if(coords.features){                
         Object.keys(coords.features).map(key => {  
             let districtPolygons = [];
@@ -49,9 +57,11 @@ const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers) =
                     fillColor: "#FF0000",
                     fillOpacity: 0.35,
                     indexID: currDistrict,
-                });            
+                });     
+                
                                 
-                districtPolygons.push(councilDistrictPolygon);                 
+                districtPolygons.push(councilDistrictPolygon);
+                // polygonCoords.push(coordArr);
                 var districtInfo = councilMembers.filter(item => item.district === currDistrict);                                
 
                 addListenersOnPolygon(map,maps,councilDistrictPolygon, districtInfo);
@@ -84,38 +94,59 @@ const handleApiLoaded = (map, maps, coords, selectedDistricts, councilMembers, b
     }
 }
 
-const setMap = (districts, selectedDistricts, councilMembers, selectedBudgetItems) => {
-
-    return <GoogleMapReact
-                bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN }}                    
-                defaultCenter={DEFAULT_CENTER}                 
-                defaultZoom={11}
-
-                yesIWantToUseGoogleMapApiInternals                    
-                onGoogleApiLoaded={({ map, maps }) => {
-                    handleApiLoaded(map, maps, districts, selectedDistricts, councilMembers, selectedBudgetItems)
-                }}
-            ></GoogleMapReact>;
-}
-
-const updateMap = (districts, selectedDistricts, councilMembers, selectedBudgetItems) => {
+const setMap = (state,districts, selectedDistricts, councilMembers, selectedBudgetItems) => {  
     
+    let markers = [];
+    if(selectedBudgetItems){
+        selectedBudgetItems.filter(item => item.latitude && item.longitude).map(item => {
+            markers.push(item);
+        })
+        console.log('markers', markers)
+    }
+
+
+    let coords = districts;
+    let polygons = {};
+    if(coords.features){                
+        Object.keys(coords.features).map(key => {  
+            let districtPolygons = [];
+            let currDistrict = coords.features[key].properties.coun_dist;
+            coords.features[key].geometry.coordinates.map(arr => {   
+                let coordArr = [];     
+                arr[0].map(coordinate => coordArr.push({lat: coordinate[1], lng: coordinate[0]}))
+                districtPolygons.push(coordArr);
+            });
+            polygons[key] = {district: coords.features[key].properties.coun_dist,coordinates: districtPolygons};
+        });
+        console.log('polygonCoords',polygons);
+    }
+
     return <GoogleMapReact
                 bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN }}                    
                 defaultCenter={DEFAULT_CENTER}                 
-                defaultZoom={11}
+                defaultZoom={state.zoom}
 
-                yesIWantToUseGoogleMapApiInternals                    
-                onGoogleApiLoaded={({ map, maps }) => {
-                    handleApiLoaded(map, maps, districts, selectedDistricts, councilMembers, selectedBudgetItems)
-                }}
-            ></GoogleMapReact>;
+                // yesIWantToUseGoogleMapApiInternals                    
+                // onGoogleApiLoaded={({ map, maps }) => {
+                //     handleApiLoaded(map, maps, districts, selectedDistricts, councilMembers, selectedBudgetItems)
+                // }}
+            >
+
+            {polygons ? Object.keys(polygons).map(idx => {
+                return <Polygon key={idx} district = {polygons[idx].district} coordinates = {polygons[idx].coordinates} />
+            }): null}
+
+            {markers ? markers.map((item,idx) => {
+                return <MapMarker key={idx} lat={item.latitude} lng={item.longitude} />
+            }): null}
+
+            </GoogleMapReact>;
 }
 
 const reducer = (state = initialState, action) => {
     switch(action.type){
-        case actionTypes.SET_MAP: return updateObject(state, {map: setMap(action.districts, action.selectedDistricts, action.councilMembers, action.selectedBudgetItems)})
-        case actionTypes.UPDATE_MAP: return updateObject(state, {map: updateMap(action.districts, action.selectedDistricts, action.councilMembers, action.selectedBudgetItems)})        
+        case actionTypes.SET_MAP: return updateObject(state, {map: setMap(state,action.districts, action.selectedDistricts, action.councilMembers, action.selectedBudgetItems)})        
+        case actionTypes.UPDATE_MAP: return updateObject(state, {map: setMap(state,action.districts, action.selectedDistricts, action.councilMembers, action.selectedBudgetItems)})        
         case actionTypes.RESET_MAP: return updateObject(state, {map: <Spinner />})        
         default:
             return state;

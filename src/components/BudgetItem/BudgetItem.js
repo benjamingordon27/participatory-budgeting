@@ -8,7 +8,7 @@ var formatter = new Intl.NumberFormat('en-US', {
 
 const budgetItem = (props) => {
     return (
-        <div className={classes.BudgetItem}>
+        <div className={classes.BudgetItem} onClick={props.clicked}>
                 <strong>Name:</strong> {props.title}<br></br>
                 <strong>Description:</strong> {props.description}<br></br>
                 <strong>Cost:</strong> {formatter.format(props.cost)}<br></br>

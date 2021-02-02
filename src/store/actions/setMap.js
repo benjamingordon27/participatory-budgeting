@@ -2,6 +2,12 @@ import * as actionTypes from './actionTypes';
 import axios from '../../axios-order';
 import * as getRequests from './getRequests';
 
+export const zoomIn = () => {
+    return {
+        type: actionTypes.ZOOM_IN,
+    }
+}
+
 export const setMap = (districts, selectedDistricts, councilMembers, selectedBudgetItems) => {
     return {
         type: actionTypes.SET_MAP,
