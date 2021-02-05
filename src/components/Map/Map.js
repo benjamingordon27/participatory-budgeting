@@ -27,7 +27,7 @@ const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers) =
                 // polygonCoords.push(coordArr);
                 var districtInfo = councilMembers.filter(item => item.district === currDistrict);                                
 
-                addListenersOnPolygon(map,maps,councilDistrictPolygon, districtInfo);
+                // addListenersOnPolygon(map,maps,councilDistrictPolygon, districtInfo);
             });            
             allDistrictPolygons[key] = {district: coords.features[key].properties.coun_dist,polygons: districtPolygons};
         });
@@ -38,15 +38,15 @@ const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers) =
     })
 }
 
-const addListenersOnPolygon = (map,maps,polygon, info) => {
-    var infoWindow = new maps.InfoWindow();    
-    maps.event.addListener(polygon, 'click', function (event) {
-        infoWindow.setContent('District: '+polygon.indexID + '<br>Council Member: '+ info[0].name+ '<br>Political Party: '+ info[0].political_party);
-        var latLng = event.latLng;
-        infoWindow.setPosition(latLng);
-        infoWindow.open(map);        
-    });  
-  }
+// const addListenersOnPolygon = (map,maps,polygon, info) => {
+//     var infoWindow = new maps.InfoWindow();    
+//     maps.event.addListener(polygon, 'click', function (event) {
+//         infoWindow.setContent('District: '+polygon.indexID + '<br>Council Member: '+ info[0].name+ '<br>Political Party: '+ info[0].political_party);
+//         var latLng = event.latLng;
+//         infoWindow.setPosition(latLng);
+//         infoWindow.open(map);        
+//     });  
+//   }
 
 const handleApiLoaded = (map, maps, coords, selectedDistricts, councilMembers, budget) => {
     if(budget){

@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import MapMarker from '../../components/UI/MapMarker/MapMarker';
 import * as actions from '../../store/actions/index';
+import translateCategory from '../../util/translateCategory';
 
 import Map from '../../components/Map/Map';
 
@@ -38,6 +39,10 @@ class BudgetMap extends Component{
                     key={idx} 
                     lat={item.latitude} 
                     lng={item.longitude} 
+                    item={translateCategory(item)}
+                    width={'40px'}
+                    height={'40px'}
+                    zoom={this.state.zoom} ////figure out how to change on zoom change, might have to be rendered not in an array in component but in render itself
                     clicked={() => this.increaseZoom({ lat: item.latitude, lng: item.longitude })}/>
                 );
             })
