@@ -1,6 +1,8 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
 
+import config from './mapConfig';
+
 const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers) => {
     let allDistrictPolygons = {};
     // let polygonCoords = [];
@@ -59,10 +61,11 @@ const map = (props) => {
 
     let output =
         <GoogleMapReact
-                    bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN }}                    
+                    bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN, v: '3.31', }}                    
                     defaultCenter={props.defaultCenter}
                     center={{lat: Number(props.center.lat), lng: Number(props.center.lng)}}
                     zoom={props.zoom}
+                    options={config}   
 
                     yesIWantToUseGoogleMapApiInternals
                     onGoogleApiLoaded={({ map, maps }) => {

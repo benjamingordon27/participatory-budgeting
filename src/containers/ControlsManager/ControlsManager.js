@@ -60,7 +60,10 @@ class ControlsManager extends Component {
         console.log(this.props, this.state)
 
         return (
-            <div>                
+            <div>
+                <Button message={'Zoom In'} clicked={this.props.onZoomIn}/>
+                <Button message={'Zoom Out'} clicked={this.props.onZoomOut}/>  
+
                 {this.props.participatoryBudget && this.props.districts && this.props.councilMembers && this.props.itemCategories ?
                     <div>
                         <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>                        
@@ -103,7 +106,9 @@ const mapDispatchToProps = dispatch => {
         onInitBudget: () => dispatch(actions.initBudget()),  
         onBudgetByYear: (budget, year) => dispatch(actions.budgetByYear(budget,year)),
         onBudgetByCategory: (budget, category) => dispatch(actions.budgetByCategory(budget,category)),
-        onBudgetByDistrict: (budget, district) => dispatch(actions.budgetByDistrict(budget,district))
+        onBudgetByDistrict: (budget, district) => dispatch(actions.budgetByDistrict(budget,district)),
+        onZoomIn: () => dispatch(actions.zoomIn()),
+        onZoomOut: () => dispatch(actions.zoomOut()),
     }
 }
 

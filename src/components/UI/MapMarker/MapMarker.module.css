@@ -4,6 +4,5 @@
 }
 
 .MapMarker img {
-    object-fit: contain;
-    transform: translate(-50%);
+    object-fit: contain;    
 }

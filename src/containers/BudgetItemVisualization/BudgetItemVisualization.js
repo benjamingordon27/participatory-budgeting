@@ -10,7 +10,7 @@ class BudgetItemVisualization extends Component {
 
     setCenter = (item) => {
         if(item.longitude && item.latitude){
-            this.props.onZoomIn({lat: item.latitude, lng: item.longitude});
+            this.props.onZoomMarker({lat: item.latitude, lng: item.longitude});
         }
     }
 
@@ -19,12 +19,12 @@ class BudgetItemVisualization extends Component {
         console.log('[BudgetItemVisualization.js]', this.props.selectedBudgetItems);
 
         return(
-            <div>                
+            <div>                                
                 {this.props.selectedBudgetItems ? 
                     this.props.selectedBudgetItems.map(item => {
                         return <BudgetItem key={item.title + ' ' + item.description} {...item} clicked={() => this.setCenter(item)}/>
                     })
-                :<p>Budget items will load up here</p>}
+                :<p>Budget items will load here</p>}                
             </div>
         );
     }
@@ -40,7 +40,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onZoomIn: (center) => dispatch(actions.zoomIn(center)),
+        onZoomMarker: (center) => dispatch(actions.zoomMarker(center)),
+        onZoomIn: () => dispatch(actions.zoomIn()),
+        onZoomOut: () => dispatch(actions.zoomOut()),
     }
 }
 

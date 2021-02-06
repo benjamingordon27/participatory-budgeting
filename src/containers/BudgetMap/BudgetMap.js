@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import Button from '../../components/UI/Button/Button';
 import MapMarker from '../../components/UI/MapMarker/MapMarker';
 import * as actions from '../../store/actions/index';
 import translateCategory from '../../util/translateCategory';
@@ -12,9 +13,6 @@ const DEFAULT_CENTER = { lat: 40.635, lng: -73.94 };
 class BudgetMap extends Component{
     state = {
         firstPageLoad: false,
-        zoom: 11,
-        center: DEFAULT_CENTER,
-        markers: [],
     } 
 
     componentDidMount(){
@@ -31,42 +29,43 @@ class BudgetMap extends Component{
 
         if((prevProps.selectedBudgetItems !== this.props.selectedBudgetItems)){
             this.props.onResetMap();            
-            this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
-            
-            let markers = [];            
+            this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);     
+        }        
+    }
+
+    markerClicked = (center) => {        
+        this.props.onZoomMarker(center);
+    }
+
+    render(){     
+        
+        let markers = [];    
+        if(this.props.selectedBudgetItems){                    
             this.props.selectedBudgetItems.filter(item => item.latitude && item.longitude).map((item,idx) => {
                 markers.push(<MapMarker 
+                    center={this.props.center}
                     key={idx} 
                     lat={item.latitude} 
                     lng={item.longitude} 
                     item={translateCategory(item)}
-                    width={'40px'}
-                    height={'40px'}
-                    zoom={this.state.zoom} ////figure out how to change on zoom change, might have to be rendered not in an array in component but in render itself
-                    clicked={() => this.increaseZoom({ lat: item.latitude, lng: item.longitude })}/>
+                    width={'30px'}
+                    height={'30px'}
+                    zoom={this.props.zoom} ////figure out how to change on zoom change, might have to be rendered not in an array in component but in render itself
+                    clicked={() => this.markerClicked({ lat: item.latitude, lng: item.longitude })}/>
                 );
             })
-            this.setState({markers: markers})            
-        }        
-    }
+        }
 
-    increaseZoom = (center) => {
-        console.log('center?', center)        
-        this.setState({zoom: 12,center: center})
-        this.props.onZoomIn(center);
-    }
-    
-    render(){        
 
         return(
-            <div style={{ height: '87vh', width: '100%' }}>                
-                {this.props.mapProps ? 
-                <Map 
-                    {...this.props.mapProps} 
-                        zoom={this.state.zoom} 
-                        center={this.props.center} 
-                        defaultCenter={DEFAULT_CENTER}
-                        markers={this.state.markers}/> 
+            <div style={{ height: '87vh', width: '100%' }}>
+                {this.props.mapProps ?                     
+                    <Map 
+                        {...this.props.mapProps} 
+                            zoom={this.props.zoom} 
+                            center={this.props.center} 
+                            defaultCenter={DEFAULT_CENTER}
+                            markers={markers}/>                 
                     :null}
             </div>            
         );
@@ -87,6 +86,7 @@ const mapStateToProps = state => {
         
         mapProps: state.setMap.mapProps,        
         center: state.setMap.center,
+        zoom: state.setMap.zoom,
         selectedBudgetItems: state.subsets.selectedBudgetItems,
     }
 }
@@ -96,7 +96,7 @@ const mapDispatchToProps = dispatch => {
         onSetMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems) => dispatch(actions.setMap(districts, selectedDistricts, councilMembers, selectedBudgetItems)),  
         onUpdateMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems) => dispatch(actions.updateMap(districts, selectedDistricts, councilMembers, selectedBudgetItems)),  
         onResetMap: () => dispatch(actions.resetMap()),
-        onZoomIn: (center) => dispatch(actions.zoomIn(center)),
+        onZoomMarker: (center) => dispatch(actions.zoomMarker(center)),
     }
 }
 
