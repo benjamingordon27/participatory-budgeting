@@ -39,8 +39,48 @@ const sortByYear = (participatoryBudget, year) =>{
     return transformed;    
 }
 
+const filterBudget = (participatoryBudget, category, year, district) => {
+    let transformed = [];
+
+    console.log('category',category);
+    console.log('year', year);
+    console.log('district',district);
+    
+    if(year !== ''){
+        Object.keys(participatoryBudget).map(key => {        
+            if(participatoryBudget[key].vote_year === year)
+                transformed.push(participatoryBudget[key])
+        })
+    }else{
+        transformed = participatoryBudget;
+    }
+    
+    if(category !== ''){
+        let newTransformed = [];
+        Object.keys(transformed).map(key => {        
+            if(transformed[key].category === category)
+                newTransformed.push(transformed[key])
+        })
+        transformed = newTransformed;
+    }
+
+    if(district !== ''){
+        let newTransformed = [];
+        Object.keys(transformed).map(key => {        
+            if(transformed[key].council_district === district)
+                newTransformed.push(transformed[key])
+        })
+        transformed = newTransformed;
+    }
+
+    console.log('transformed filter', transformed);
+    return transformed;
+
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type){
+        case actionTypes.BUDGET_FILTER: return updateObject(state, {selectedBudgetItems: filterBudget(action.budget, action.category, action.year, action.district)})
         case actionTypes.BUDGET_BY_YEAR: return updateObject(state, {selectedBudgetItems: sortByYear(action.budget, action.year)})
         case actionTypes.BUDGET_BY_DISTRICT: return updateObject(state, {selectedBudgetItems: sortByDistrict(action.budget, action.district)})
         case actionTypes.BUDGET_BY_CATEGORY: return updateObject(state, {selectedBudgetItems: sortByCategory(action.budget, action.category)})

@@ -14,15 +14,22 @@ class BudgetItemVisualization extends Component {
         }
     }
 
+    findDistrict = (district) => {
+        if(this.props.councilMembers){                        
+            var councilMember = this.props.councilMembers.filter(item => item.district === district.match(/\d+/)[0]);            
+            return councilMember;
+        }
+    }
+
     render(){
 
-        console.log('[BudgetItemVisualization.js]', this.props.selectedBudgetItems);
+        console.log('[BudgetItemVisualization.js]', this.props);
 
         return(
             <div>                                
                 {this.props.selectedBudgetItems ? 
-                    this.props.selectedBudgetItems.map(item => {
-                        return <BudgetItem key={item.title + ' ' + item.description} {...item} clicked={() => this.setCenter(item)}/>
+                    this.props.selectedBudgetItems.map(item => {                        
+                        return <BudgetItem key={item.title + ' ' + item.description} {...item} councilMember={this.findDistrict(item.council_district)} clicked={() => this.setCenter(item)}/>
                     })
                 :<p>Budget items will load here</p>}                
             </div>
@@ -33,6 +40,7 @@ class BudgetItemVisualization extends Component {
 const mapStateToProps = state => {
     return {
         selectedBudgetItems: state.subsets.selectedBudgetItems,
+        councilMembers: state.participatoryBudget.councilMembers,
 
         center: state.setMap.center,
     }

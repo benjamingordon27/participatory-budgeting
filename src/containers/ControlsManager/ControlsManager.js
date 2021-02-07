@@ -17,29 +17,7 @@ class ControlsManager extends Component {
         this.props.onInitBudget();        
     }
 
-    getStateSelectedYear(){        
-        if(this.state.selectedYear !== '')
-            return this.state.selectedYear
-        else
-            return this.props.itemYears[0]
-    }
-
-    getStateSelectedCategory(){
-        if(this.state.selectedCategory !== '')
-            return this.state.selectedCategory
-        else
-            return this.props.itemCategories[0]
-    }
-
-    getStateSelectedDistrict(){
-        if(this.state.selectedDistrict !== '')
-            return this.state.selectedDistrict
-        else
-            return this.props.itemDistricts[0]
-    }
-
-
-    itemsByYear = (event) => {        
+    itemsByYear = (event) => {                
         this.setState({selectedYear: event.target.value})
     }
 
@@ -66,15 +44,17 @@ class ControlsManager extends Component {
 
                 {this.props.participatoryBudget && this.props.districts && this.props.councilMembers && this.props.itemCategories ?
                     <div>
-                        <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>                        
+                        <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>              
                         <Dropdown message={'Items by year'} title={'Year'} list={this.props.itemYears} handleChange={this.itemsByYear}/>
                         <Dropdown message={'Items by category'} title={'Category'} list={this.props.itemCategories} handleChange={this.itemsByCategory}/>
 
+                        <Button message={'Submit'} clicked = {() => this.props.onBudgetFilter(this.props.participatoryBudget, this.state.selectedCategory, this.state.selectedYear, this.state.selectedDistrict)}/>
+                        <br></br>
                         <Button message={'Top 10 Budget Items by Cost'}/>
                         <Button message={'Item with highest cost'}/>
-                        <Button clicked = {() => this.props.onBudgetByDistrict(this.props.participatoryBudget, this.getStateSelectedDistrict())} message={'Submit District'}/>
+                        {/* <Button clicked = {() => this.props.onBudgetByDistrict(this.props.participatoryBudget, this.getStateSelectedDistrict())} message={'Submit District'}/>
                         <Button clicked = {() => this.props.onBudgetByYear(this.props.participatoryBudget, this.getStateSelectedYear())} message={'Submit Year'}/>
-                        <Button clicked = {() => this.props.onBudgetByCategory(this.props.participatoryBudget, this.getStateSelectedCategory())} message={'Submit Category'}/>
+                        <Button clicked = {() => this.props.onBudgetByCategory(this.props.participatoryBudget, this.getStateSelectedCategory())} message={'Submit Category'}/> */}
                     </div>
                 :null}
                 {data}
@@ -109,6 +89,7 @@ const mapDispatchToProps = dispatch => {
         onBudgetByDistrict: (budget, district) => dispatch(actions.budgetByDistrict(budget,district)),
         onZoomIn: () => dispatch(actions.zoomIn()),
         onZoomOut: () => dispatch(actions.zoomOut()),
+        onBudgetFilter: (budget, category, year, district) => dispatch(actions.budgetFilter(budget, category, year, district)),
     }
 }
 

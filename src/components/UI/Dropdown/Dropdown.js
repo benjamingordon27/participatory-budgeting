@@ -7,9 +7,9 @@ const dropdown = (props) => {
         options = props.list.map(item => <option key={item} value={item}>{item}</option>)
     return(
         <div className={classes.Dropdown}>
-            {props.title+': '}
+            {props.title}<br></br>
             <select onChange={props.handleChange}>
-                {/* <option value={''}>{''}</option> */}
+                <option value={''}>{''}</option>
                 {options}
             </select>
         </div>

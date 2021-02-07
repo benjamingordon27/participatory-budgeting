@@ -15,4 +15,5 @@ export {
     budgetByYear,
     budgetByDistrict,
     budgetByCategory,
+    budgetFilter,
 } from './calculateSubsets';

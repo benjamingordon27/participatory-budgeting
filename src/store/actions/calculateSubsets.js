@@ -1,13 +1,11 @@
 import * as actionTypes from './actionTypes';
 
-export const budgetByYear = (budget, year) => {
-    console.log('dispatched')
+export const budgetByYear = (budget, year) => {    
     return {
         type: actionTypes.BUDGET_BY_YEAR,
         budget: budget,
         year: year,
     }
-
 }
 
 export const budgetByCategory = (budget, category) => {
@@ -16,15 +14,22 @@ export const budgetByCategory = (budget, category) => {
         budget: budget,
         category: category,
     }
-
 }
 
-export const budgetByDistrict = (budget, district) => {
-    console.log('dispatched')
+export const budgetByDistrict = (budget, district) => {    
     return {
         type: actionTypes.BUDGET_BY_DISTRICT,
         budget: budget,
         district: district,
     }
+}
 
+export const budgetFilter = (budget, category, year, district) => {    
+    return {
+        type: actionTypes.BUDGET_FILTER,
+        budget: budget,
+        category: category,
+        year: year,
+        district: district,
+    }
 }
