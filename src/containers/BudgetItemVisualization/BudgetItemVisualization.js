@@ -23,15 +23,24 @@ class BudgetItemVisualization extends Component {
 
     render(){
 
-        console.log('[BudgetItemVisualization.js]', this.props);
+        console.log(this.props)
 
+        let budgetItems = [];
+        if(this.props.selectedBudgetItems){
+            this.props.selectedBudgetItems.map((item,idx )=> {
+                budgetItems.push( <BudgetItem 
+                            key={idx} 
+                            {...item} 
+                            councilMember={this.findDistrict(item.council_district)} 
+                            clicked={() => this.setCenter(item)}
+                        />
+                    );
+            })
+        }
+        
         return(
             <div>                                
-                {this.props.selectedBudgetItems ? 
-                    this.props.selectedBudgetItems.map(item => {                        
-                        return <BudgetItem key={item.title + ' ' + item.description} {...item} councilMember={this.findDistrict(item.council_district)} clicked={() => this.setCenter(item)}/>
-                    })
-                :<p>Budget items will load here</p>}                
+                {this.props.selectedBudgetItems ? budgetItems : <p>Budget items will load here</p>}                
             </div>
         );
     }
@@ -40,8 +49,8 @@ class BudgetItemVisualization extends Component {
 const mapStateToProps = state => {
     return {
         selectedBudgetItems: state.subsets.selectedBudgetItems,
-        councilMembers: state.participatoryBudget.councilMembers,
-
+        councilMembers: state.participatoryBudget.councilMembers,        
+        
         center: state.setMap.center,
     }
 }
@@ -50,7 +59,7 @@ const mapDispatchToProps = dispatch => {
     return {
         onZoomMarker: (center) => dispatch(actions.zoomMarker(center)),
         onZoomIn: () => dispatch(actions.zoomIn()),
-        onZoomOut: () => dispatch(actions.zoomOut()),
+        onZoomOut: () => dispatch(actions.zoomOut()),        
     }
 }
 

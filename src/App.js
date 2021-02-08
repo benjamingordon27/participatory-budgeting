@@ -3,6 +3,7 @@ import './App.css';
 import ControlsManager from './containers/ControlsManager/ControlsManager'
 import BudgetMap from './containers/BudgetMap/BudgetMap'
 import BudgetItemVisualization from './containers/BudgetItemVisualization/BudgetItemVisualization'
+import LegendManager from './containers/LegendManager/LegendManager'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <BudgetItemVisualization />
         </div>
         <BudgetMap />
+        <LegendManager />
       </div>
     </div>
   );

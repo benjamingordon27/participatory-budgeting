@@ -15,7 +15,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const rootReducer = combineReducers({
   participatoryBudget: participatoryBudgetReducer,
   subsets: calculateSubsetsReducer,
-  setMap: setMap
+  setMap: setMap,
+  
 })
 
 const store = createStore(rootReducer,composeEnhancers(

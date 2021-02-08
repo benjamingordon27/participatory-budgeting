@@ -21,6 +21,12 @@ export const zoomIn = () => {
     }
 }
 
+export const center = () => {
+    return {
+        type: actionTypes.CENTER, 
+    }
+}
+
 export const setMap = (districts, selectedDistricts, councilMembers, selectedBudgetItems) => {
     return {
         type: actionTypes.SET_MAP,

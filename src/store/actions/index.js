@@ -9,6 +9,7 @@ export {
     zoomMarker,
     zoomIn,
     zoomOut,    
+    center,
 } from './setMap';
 
 export {

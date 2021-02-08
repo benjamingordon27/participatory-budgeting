@@ -24,12 +24,14 @@ export const budgetByDistrict = (budget, district) => {
     }
 }
 
-export const budgetFilter = (budget, category, year, district) => {    
+export const budgetFilter = (budget, category, year, district, minCost, maxCost) => {    
     return {
         type: actionTypes.BUDGET_FILTER,
         budget: budget,
         category: category,
         year: year,
         district: district,
+        minCost: minCost,
+        maxCost: maxCost,
     }
 }

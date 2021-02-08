@@ -21,3 +21,4 @@ export const RESET_MAP = 'RESET_MAP';
 export const ZOOM_MARKER = 'ZOOM_MARKER';
 export const ZOOM_IN = 'ZOOM_IN';
 export const ZOOM_OUT = 'ZOOM_OUT';
+export const CENTER = 'CENTER';

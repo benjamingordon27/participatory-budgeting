@@ -1,0 +1,12 @@
+.Legend{
+    text-align: left;    
+    list-style: none;
+    padding: 5px 5px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.Legend img {
+    width: 2vh;
+    height: auto;
+}

@@ -34,6 +34,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.ZOOM_MARKER: return updateObject(state, {zoom: 14, center: action.center})
         case actionTypes.ZOOM_IN: return updateObject(state, {zoom: state.zoom + 1})
         case actionTypes.ZOOM_OUT: return updateObject(state, {zoom: state.zoom - 1})
+        case actionTypes.CENTER: return updateObject(state, {zoom: 11, center: DEFAULT_CENTER})
         default:
             return state;
     }
