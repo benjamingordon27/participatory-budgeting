@@ -30,7 +30,12 @@ class BudgetMap extends Component{
         if((prevProps.selectedBudgetItems !== this.props.selectedBudgetItems)){
             this.props.onResetMap();            
             this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);     
-        }        
+        }    
+        
+        if((this.props.showDistricts !== prevProps.showDistricts)){
+            console.log('[BudgetMap.js] show districts')
+
+        }  
     }
 
     markerClicked = (center) => {        
@@ -56,16 +61,18 @@ class BudgetMap extends Component{
             })
         }
 
+        console.log('[BudgetMap.js]', this.props)
 
         return(
             <div style={{ height: '87vh', width: '100%' }}>
-                {this.props.mapProps ?                     
+                {this.props.mapProps ?                 
                     <Map 
                         {...this.props.mapProps} 
                             zoom={this.props.zoom} 
                             center={this.props.center} 
                             defaultCenter={DEFAULT_CENTER}
-                            markers={markers}/>                 
+                            markers={markers}
+                            showDistricts={this.props.showDistricts}/> 
                     :null}
             </div>            
         );
@@ -84,6 +91,7 @@ const mapStateToProps = state => {
         selectedDistricts: state.participatoryBudget.selectedDistricts,   
         loaded: state.participatoryBudget.loaded,
         
+        showDistricts: state.setMap.showDistricts,
         mapProps: state.setMap.mapProps,        
         center: state.setMap.center,
         zoom: state.setMap.zoom,
@@ -94,9 +102,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {        
         onSetMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems) => dispatch(actions.setMap(districts, selectedDistricts, councilMembers, selectedBudgetItems)),  
-        onUpdateMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems) => dispatch(actions.updateMap(districts, selectedDistricts, councilMembers, selectedBudgetItems)),  
+        onUpdateMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems, showDistricts) => dispatch(actions.updateMap(districts, selectedDistricts, councilMembers, selectedBudgetItems, showDistricts)),  
         onResetMap: () => dispatch(actions.resetMap()),
-        onZoomMarker: (center) => dispatch(actions.zoomMarker(center)),
+        onZoomMarker: (center) => dispatch(actions.zoomMarker(center)),           
     }
 }
 

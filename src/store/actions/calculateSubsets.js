@@ -24,7 +24,7 @@ export const budgetByDistrict = (budget, district) => {
     }
 }
 
-export const budgetFilter = (budget, category, year, district, minCost, maxCost) => {    
+export const budgetFilter = (budget, category, year, district, minCost, maxCost, minVotes, maxVotes) => {    
     return {
         type: actionTypes.BUDGET_FILTER,
         budget: budget,
@@ -33,5 +33,7 @@ export const budgetFilter = (budget, category, year, district, minCost, maxCost)
         district: district,
         minCost: minCost,
         maxCost: maxCost,
+        minVotes: minVotes,
+        maxVotes: maxVotes,
     }
 }

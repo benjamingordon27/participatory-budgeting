@@ -14,6 +14,8 @@ class ControlsManager extends Component {
         selectedDistrict: '',
         minCost: '',
         maxCost: '',
+        minVotes: '',
+        maxVotes: '',
     }
 
     componentDidMount(){        
@@ -40,6 +42,14 @@ class ControlsManager extends Component {
         this.setState({maxCost: event.target.value})
     }
 
+    minVotesState = (event) => {
+        this.setState({minVotes: event.target.value})
+    }
+
+    maxVotesState = (event) => {
+        this.setState({maxVotes: event.target.value})
+    }
+
     render(){
         let data ='';
         if(this.props.loading){
@@ -55,17 +65,30 @@ class ControlsManager extends Component {
                 <Button message={'Zoom In'} clicked={this.props.onZoomIn}/>
                 <Button message={'Zoom Out'} clicked={this.props.onZoomOut}/>  
                 <Button message={'Center'} clicked={this.props.onCenter}/>  
+                {this.props.districts ?<Button message={'Show Districts'} clicked={this.props.onShowDistricts}/> :null}
 
                 {this.props.participatoryBudget && this.props.districts && this.props.councilMembers && this.props.itemCategories ?
                     <div>
-                        <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>              
+                        <Dropdown message={'Items by Council Member'} title= {'Council Member'} list={this.props.councilMembersList} handleChange={this.itemsByDistrict}/>
+                        <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>
                         <Dropdown message={'Items by year'} title={'Year'} list={this.props.itemYears} handleChange={this.itemsByYear}/>
                         <Dropdown message={'Items by category'} title={'Category'} list={this.props.itemCategories} handleChange={this.itemsByCategory}/>
                         <Input label='Minimum cost' handleChange={this.minCostState}/>
                         <Input label='Maximum cost' handleChange={this.maxCostState}/>
+                        <Input label='Minimum votes' handleChange={this.minVotesState}/>
+                        <Input label='Maximum votes' handleChange={this.maxVotesState}/>
 
 
-                        <Button message={'Submit'} clicked = {() => this.props.onBudgetFilter(this.props.participatoryBudget, this.state.selectedCategory, this.state.selectedYear, this.state.selectedDistrict, this.state.minCost, this.state.maxCost)}/>
+                        <Button message={'Submit'} clicked = {() => 
+                            this.props.onBudgetFilter(this.props.participatoryBudget, 
+                                        this.state.selectedCategory, 
+                                        this.state.selectedYear, 
+                                        this.state.selectedDistrict, 
+                                        this.state.minCost, 
+                                        this.state.maxCost,
+                                        this.state.minVotes, 
+                                        this.state.maxVotes,                                   
+                                        )}/>
                         <br></br>
                         <Button message={'Top 10 Budget Items by Cost'}/>
                         <Button message={'Item with highest cost'}/>
@@ -88,13 +111,14 @@ const mapStateToProps = state => {
         councilMemberLoading: state.participatoryBudget.councilMemberLoading,
         error: state.participatoryBudget.error,
         councilMembers: state.participatoryBudget.councilMembers,
+        councilMembersList: state.participatoryBudget.councilMembersList,
         districts: state.participatoryBudget.districts,
         districtsLoading: state.participatoryBudget.districtsLoading,
         itemCategories: state.participatoryBudget.itemCategories,
         itemYears: state.participatoryBudget.itemYears,
         itemDistricts: state.participatoryBudget.itemDistricts,
 
-        selectedBudgetItems: state.subsets.selectedBudgetItems
+        selectedBudgetItems: state.subsets.selectedBudgetItems,        
     }
 }
 
@@ -107,7 +131,17 @@ const mapDispatchToProps = dispatch => {
         onZoomIn: () => dispatch(actions.zoomIn()),
         onZoomOut: () => dispatch(actions.zoomOut()),
         onCenter: () => dispatch(actions.center()),
-        onBudgetFilter: (budget, category, year, district,minCost, maxCost) => dispatch(actions.budgetFilter(budget, category, year, district, minCost, maxCost)),
+        onShowDistricts: () => dispatch(actions.showDistricts()),
+        onBudgetFilter: (budget, category, year, district,minCost, maxCost, minVotes, maxVotes) => 
+            dispatch(actions.budgetFilter(budget, 
+                        category, 
+                        year, 
+                        district, 
+                        minCost, 
+                        maxCost, 
+                        minVotes, 
+                        maxVotes
+                        )),
     }
 }
 

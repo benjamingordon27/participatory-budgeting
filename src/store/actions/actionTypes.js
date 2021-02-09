@@ -22,3 +22,4 @@ export const ZOOM_MARKER = 'ZOOM_MARKER';
 export const ZOOM_IN = 'ZOOM_IN';
 export const ZOOM_OUT = 'ZOOM_OUT';
 export const CENTER = 'CENTER';
+export const SHOW_DISTRICTS = 'SHOW_DISTRICTS';

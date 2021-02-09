@@ -10,6 +10,7 @@ export {
     zoomIn,
     zoomOut,    
     center,
+    showDistricts,
 } from './setMap';
 
 export {

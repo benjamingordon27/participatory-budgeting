@@ -9,6 +9,7 @@ const initialState = {
     councilMemberLoading: false,
     error: false,
     councilMembers: null,
+    councilMembersList: null,
     districts: null,
     districtsLoading: false,
     itemCategories: null,
@@ -25,18 +26,6 @@ const initCategory = (participatoryBudget) => {
     keys.forEach(function(key){
         categories.push(participatoryBudget[key].category);
     });    
-    // var smallerListOfCategories = ['Culture and Community Facilities','Schools and Education','Environment',
-    //     'Housing','Parks and Recreation','Public Health','Public Safety','Sanitation','Seniors','Streets and Sidewalks','Transit and Transportation','Youth']
-
-    // var uniqueCategories = categories.filter((v, i, a) => a.indexOf(v) === i).sort();
-
-    // for(var category in uniqueCategories){
-    //     var similarities = [];
-    //     for(var smallerListItem in smallerListOfCategories){
-    //         similarities.push(similarSubstring(uniqueCategories[category], smallerListOfCategories[smallerListItem]))            
-    //     }
-    //     // console.log('Category: '+ uniqueCategories[category],similarities)
-    // }
 
     return categories.filter((v, i, a) => a.indexOf(v) === i).sort();
 }
@@ -128,10 +117,23 @@ const sortByCategory = (participatoryBudget, category) =>{
     return transformed;
 }
 
+const fetchCouncilMembers = (councilMembers) => {
+    let outputCouncilMembers = JSON.parse(councilMembers);    
+    let outputCouncilMembersList = [];
+    outputCouncilMembers.forEach(value => outputCouncilMembersList.push(value.name));
+    console.log(outputCouncilMembersList)
+
+    return {
+        councilMemberLoading: false,
+        councilMembers: outputCouncilMembers,
+        councilMembersList: outputCouncilMembersList,
+    }
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type){
         case actionTypes.FETCH_COUNCIL_MEMBER_START: return updateObject(state, {councilMemberLoading: true})
-        case actionTypes.FETCH_COUNCIL_MEMBER_SUCCESS: return updateObject(state, {councilMemberLoading: false, councilMembers: JSON.parse(action.councilMembers)})            
+        case actionTypes.FETCH_COUNCIL_MEMBER_SUCCESS: return updateObject(state, fetchCouncilMembers(action.councilMembers))            
         case actionTypes.FETCH_COUNCIL_MEMBER_FAIL: return updateObject(state, {error: action.error, councilMemberLoading: false})
         
         case actionTypes.FETCH_PARTICIPATORY_BUDGET_ITEM_START: return updateObject(state, {loading: true})

@@ -3,10 +3,13 @@ import GoogleMapReact from 'google-map-react';
 
 import config from './mapConfig';
 
-const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers) => {
+const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers, showDistricts) => {
     let allDistrictPolygons = {};
     // let polygonCoords = [];
-    if(coords.features){                
+    console.log('show districts?', showDistricts)
+    console.log(coords)
+
+    if(showDistricts){
         Object.keys(coords.features).map(key => {  
             let districtPolygons = [];
             let currDistrict = coords.features[key].properties.coun_dist;
@@ -29,7 +32,7 @@ const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers) =
                 // polygonCoords.push(coordArr);
                 var districtInfo = councilMembers.filter(item => item.district === currDistrict);                                
 
-                // addListenersOnPolygon(map,maps,councilDistrictPolygon, districtInfo);
+                addListenersOnPolygon(map,maps,councilDistrictPolygon, districtInfo);
             });            
             allDistrictPolygons[key] = {district: coords.features[key].properties.coun_dist,polygons: districtPolygons};
         });
@@ -40,25 +43,23 @@ const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers) =
     })
 }
 
-// const addListenersOnPolygon = (map,maps,polygon, info) => {
-//     var infoWindow = new maps.InfoWindow();    
-//     maps.event.addListener(polygon, 'click', function (event) {
-//         infoWindow.setContent('District: '+polygon.indexID + '<br>Council Member: '+ info[0].name+ '<br>Political Party: '+ info[0].political_party);
-//         var latLng = event.latLng;
-//         infoWindow.setPosition(latLng);
-//         infoWindow.open(map);        
-//     });  
-//   }
+const addListenersOnPolygon = (map,maps,polygon, info) => {
+    var infoWindow = new maps.InfoWindow();    
+    maps.event.addListener(polygon, 'click', function (event) {
+        infoWindow.setContent('District: '+polygon.indexID + '<br>Council Member: '+ info[0].name+ '<br>Political Party: '+ info[0].political_party);
+        var latLng = event.latLng;
+        infoWindow.setPosition(latLng);
+        infoWindow.open(map);        
+    });  
+  }
 
-const handleApiLoaded = (map, maps, coords, selectedDistricts, councilMembers, budget) => {
-    if(budget){
-        console.log('handleAPILoaded called')
-        renderDistricts(map, maps, coords, selectedDistricts, councilMembers);        
-    }
+const handleApiLoaded = (map, maps, coords, selectedDistricts, councilMembers, budget) => {    
+    console.log('handleAPILoaded called')
+    renderDistricts(map, maps, coords, selectedDistricts, councilMembers); 
 }
 
 const map = (props) => {
-
+    console.log('map props',props)
     let output =
         <GoogleMapReact
                     bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN, v: '3.31', }}                    
@@ -69,7 +70,7 @@ const map = (props) => {
 
                     yesIWantToUseGoogleMapApiInternals
                     onGoogleApiLoaded={({ map, maps }) => {
-                        handleApiLoaded(map, maps, props.districts, props.selectedDistricts, props.councilMembers, props.selectedBudgetItems)
+                        handleApiLoaded(map, maps, props.districts, props.selectedDistricts, props.councilMembers, props.selectedBudgetItems, props.showDistricts)
                     }}
         >
             {props.markers}

@@ -12,6 +12,7 @@ const initialState = {
     zoom: 11,
     markers: [],
     center: DEFAULT_CENTER,
+    showDistricts: false,
 }
 
 const setMap = (state,districts, selectedDistricts, councilMembers, selectedBudgetItems) => {  
@@ -35,6 +36,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.ZOOM_IN: return updateObject(state, {zoom: state.zoom + 1})
         case actionTypes.ZOOM_OUT: return updateObject(state, {zoom: state.zoom - 1})
         case actionTypes.CENTER: return updateObject(state, {zoom: 11, center: DEFAULT_CENTER})
+        case actionTypes.SHOW_DISTRICTS: return updateObject(state, {map: <Spinner />})
         default:
             return state;
     }

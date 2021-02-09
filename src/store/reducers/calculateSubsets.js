@@ -36,7 +36,7 @@ const sortByYear = (participatoryBudget, year) =>{
     return transformed;    
 }
 
-const filterBudget = (participatoryBudget, category, year, district, minCost, maxCost) => {
+const filterBudget = (participatoryBudget, category, year, district, minCost, maxCost, minVotes, maxVotes) => {
     let newBudget = [];
     Object.keys(participatoryBudget).map(key => {
         newBudget.push(participatoryBudget[key])
@@ -52,6 +52,10 @@ const filterBudget = (participatoryBudget, category, year, district, minCost, ma
         newBudget = newBudget.filter(item => Number(item.cost) >= Number(minCost));
     if(maxCost != '')
         newBudget = newBudget.filter(item => Number(item.cost) <= Number(maxCost));
+    if(minVotes != '')
+        newBudget = newBudget.filter(item => Number(item.votes) >= Number(minVotes));
+    if(maxVotes != '')
+        newBudget = newBudget.filter(item => Number(item.votes) <= Number(maxVotes));
 
     console.log(newBudget)
 
@@ -60,7 +64,7 @@ const filterBudget = (participatoryBudget, category, year, district, minCost, ma
 
 const reducer = (state = initialState, action) => {
     switch(action.type){
-        case actionTypes.BUDGET_FILTER: return updateObject(state, {selectedBudgetItems: filterBudget(action.budget, action.category, action.year, action.district, action.minCost, action.maxCost), action: {...action}})
+        case actionTypes.BUDGET_FILTER: return updateObject(state, {selectedBudgetItems: filterBudget(action.budget, action.category, action.year, action.district, action.minCost, action.maxCost, action.minVotes, action.maxVotes), action: {...action}})
         case actionTypes.BUDGET_BY_YEAR: return updateObject(state, {selectedBudgetItems: sortByYear(action.budget, action.year)})
         case actionTypes.BUDGET_BY_DISTRICT: return updateObject(state, {selectedBudgetItems: sortByDistrict(action.budget, action.district)})
         case actionTypes.BUDGET_BY_CATEGORY: return updateObject(state, {selectedBudgetItems: sortByCategory(action.budget, action.category)})

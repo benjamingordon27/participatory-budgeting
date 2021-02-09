@@ -27,6 +27,20 @@ export const center = () => {
     }
 }
 
+export const showDistrictsHelper = () => {
+    console.log('show districts helper')
+    return {
+        type: actionTypes.SHOW_DISTRICTS,
+    }
+}
+
+export const showDistricts = () => {
+    console.log('show districts')
+    return dispatch => {
+        setTimeout(() => dispatch(showDistrictsHelper(),50));
+    }
+}
+
 export const setMap = (districts, selectedDistricts, councilMembers, selectedBudgetItems) => {
     return {
         type: actionTypes.SET_MAP,
@@ -43,7 +57,7 @@ export const updateHelper = (districts, selectedDistricts, councilMembers, selec
         districts: districts,
         selectedDistricts: selectedDistricts,
         councilMembers: councilMembers,
-        selectedBudgetItems: selectedBudgetItems,
+        selectedBudgetItems: selectedBudgetItems,        
     }
 }
 
