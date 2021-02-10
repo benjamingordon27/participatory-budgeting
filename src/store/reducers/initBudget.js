@@ -120,8 +120,7 @@ const sortByCategory = (participatoryBudget, category) =>{
 const fetchCouncilMembers = (councilMembers) => {
     let outputCouncilMembers = JSON.parse(councilMembers);    
     let outputCouncilMembersList = [];
-    outputCouncilMembers.forEach(value => outputCouncilMembersList.push(value.name));
-    console.log(outputCouncilMembersList)
+    outputCouncilMembers.forEach(value => outputCouncilMembersList.push(value.name));    
 
     return {
         councilMemberLoading: false,

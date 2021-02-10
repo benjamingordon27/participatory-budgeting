@@ -36,10 +36,15 @@ const sortByYear = (participatoryBudget, year) =>{
     return transformed;    
 }
 
-const filterBudget = (participatoryBudget, category, year, district, minCost, maxCost, minVotes, maxVotes) => {
+const filterBudget = (participatoryBudget, councilMembers, category, year, district, minCost, maxCost, minVotes, maxVotes, councilMember) => {
     let newBudget = [];
+    let newCouncil = [];
     Object.keys(participatoryBudget).map(key => {
         newBudget.push(participatoryBudget[key])
+    })
+
+    Object.keys(councilMembers).map(key => {
+        newCouncil.push(councilMembers[key])
     })
 
     if(year != '')
@@ -56,15 +61,19 @@ const filterBudget = (participatoryBudget, category, year, district, minCost, ma
         newBudget = newBudget.filter(item => Number(item.votes) >= Number(minVotes));
     if(maxVotes != '')
         newBudget = newBudget.filter(item => Number(item.votes) <= Number(maxVotes));
+    if(councilMember != ''){        
+        var currDistrict = newCouncil.filter(member => member.name === councilMember)[[0]].district;        
+        newBudget = newBudget.filter(item => item.council_district === currDistrict);
+    }
 
-    console.log(newBudget)
+    console.log("calculate Subsets reducers",newBudget)
 
     return newBudget;
 }
 
 const reducer = (state = initialState, action) => {
     switch(action.type){
-        case actionTypes.BUDGET_FILTER: return updateObject(state, {selectedBudgetItems: filterBudget(action.budget, action.category, action.year, action.district, action.minCost, action.maxCost, action.minVotes, action.maxVotes), action: {...action}})
+        case actionTypes.BUDGET_FILTER: return updateObject(state, {selectedBudgetItems: filterBudget(action.budget, action.councilMembers, action.category, action.year, action.district, action.minCost, action.maxCost, action.minVotes, action.maxVotes, action.councilMember), action: {...action}})
         case actionTypes.BUDGET_BY_YEAR: return updateObject(state, {selectedBudgetItems: sortByYear(action.budget, action.year)})
         case actionTypes.BUDGET_BY_DISTRICT: return updateObject(state, {selectedBudgetItems: sortByDistrict(action.budget, action.district)})
         case actionTypes.BUDGET_BY_CATEGORY: return updateObject(state, {selectedBudgetItems: sortByCategory(action.budget, action.category)})
