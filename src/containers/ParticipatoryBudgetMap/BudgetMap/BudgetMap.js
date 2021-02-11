@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import Button from '../../components/UI/Button/Button';
-import MapMarker from '../../components/UI/MapMarker/MapMarker';
-import * as actions from '../../store/actions/index';
-import translateCategory from '../../util/translateCategory';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 
-import Map from '../../components/Map/Map';
+import MapMarker from '../../../components/UI/MapMarker/MapMarker';
+import * as actions from '../../../store/actions/index';
+import translateCategory from '../../../util/translateCategory';
+
+import Map from '../../../components/Map/Map';
 
 const DEFAULT_CENTER = { lat: 40.635, lng: -73.94 };
 

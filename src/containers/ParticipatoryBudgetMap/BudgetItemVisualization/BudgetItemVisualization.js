@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as actions from '../../store/actions/index';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import Dropdown from '../../components/UI/Dropdown/Dropdown';
-import Button from '../../components/UI/Button/Button';
-import BudgetItem from '../../components/BudgetItem/BudgetItem'
+import * as actions from '../../../store/actions/index';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+
+import BudgetItem from '../../../components/BudgetItem/BudgetItem'
 
 class BudgetItemVisualization extends Component {
 

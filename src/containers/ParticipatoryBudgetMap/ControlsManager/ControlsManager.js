@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as actions from '../../store/actions/index';
-import Spinner from '../../components/UI/Spinner/Spinner';
-import Dropdown from '../../components/UI/Dropdown/Dropdown';
-import Button from '../../components/UI/Button/Button';
-import Input from '../../components/UI/Input/Input';
+import * as actions from '../../../store/actions/index';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import Dropdown from '../../../components/UI/Dropdown/Dropdown';
+import Button from '../../../components/UI/Button/Button';
+import Input from '../../../components/UI/Input/Input';
 
 class ControlsManager extends Component {
 
@@ -55,6 +55,26 @@ class ControlsManager extends Component {
         this.setState({councilMember: event.target.value})
     }
 
+    clearInput = () => {        
+        // console.log('clearing input ', document.querySelectorAll("select"))
+        Array.from(document.querySelectorAll("Input")).forEach(
+            input => (input.value = '')
+        );
+        Array.from(document.querySelectorAll("select")).forEach(
+            select => (select.value = '')
+        );
+        this.setState({
+            selectedYear: '',
+            selectedCategory: '',
+            selectedDistrict: '',
+            minCost: '',
+            maxCost: '',
+            minVotes: '',
+            maxVotes: '',
+            councilMember: '',
+        })
+    }
+
     render(){
         let data ='';
         if(this.props.loading){
@@ -82,7 +102,7 @@ class ControlsManager extends Component {
                         <Input label='Minimum votes' handleChange={this.minVotesState} step='1'/>
                         <Input label='Maximum votes' handleChange={this.maxVotesState} step='1'/>
 
-
+                        <br></br>
                         <Button message={'Submit'} clicked = {() => 
                             this.props.onBudgetFilter(this.props.participatoryBudget, this.props.councilMembers,
                                         this.state.selectedCategory, 
@@ -93,13 +113,8 @@ class ControlsManager extends Component {
                                         this.state.minVotes, 
                                         this.state.maxVotes,   
                                         this.state.councilMember,                 
-                                        )}/>
-                        <br></br>
-                        <Button message={'Top 10 Budget Items by Cost'}/>
-                        <Button message={'Item with highest cost'}/>
-                        {/* <Button clicked = {() => this.props.onBudgetByDistrict(this.props.participatoryBudget, this.getStateSelectedDistrict())} message={'Submit District'}/>
-                        <Button clicked = {() => this.props.onBudgetByYear(this.props.participatoryBudget, this.getStateSelectedYear())} message={'Submit Year'}/>
-                        <Button clicked = {() => this.props.onBudgetByCategory(this.props.participatoryBudget, this.getStateSelectedCategory())} message={'Submit Category'}/> */}
+                                        )}/>                                                
+                        <Button message={'Clear'} clicked ={() => this.clearInput()} />
                     </div>
                 :null}
                 {data}
