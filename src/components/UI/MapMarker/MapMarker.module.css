@@ -1,3 +1,8 @@
 .MapMarker {
+    width: 50%;    
+    height: auto; 
+}
 
+.MapMarker img {
+    object-fit: contain;
 }

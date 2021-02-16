@@ -2,9 +2,10 @@ import * as actionTypes from './actionTypes';
 import axios from '../../axios-order';
 import * as getRequests from './getRequests';
 
-export const zoomIn = () => {
+export const zoomIn = (center) => {
     return {
         type: actionTypes.ZOOM_IN,
+        center: center,
     }
 }
 

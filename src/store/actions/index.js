@@ -5,7 +5,8 @@ export {
 export {
     setMap,
     updateMap,
-    resetMap,    
+    resetMap,
+    zoomIn,    
 } from './setMap';
 
 export {

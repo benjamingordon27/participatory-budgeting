@@ -3,8 +3,8 @@ import classes from './MapMarker.module.css'
 
 const MapMarker = (props) => {  
   return (
-      <div className={classes.MapMarker} onClick={props.clicked} lat={props.lat} lng={props.lng}>
-        <img src='http://ideas.pbnyc.org/static/css/images/markers/new/facilities.png'></img>
+      <div className={classes.MapMarker} lat={props.lat} lng={props.lng} onClick={props.clicked}>
+        <img style={{width:"40px", height:"40px"}} src='http://ideas.pbnyc.org/static/css/images/markers/new/facilities.png'></img>
       </div>
     );
 };

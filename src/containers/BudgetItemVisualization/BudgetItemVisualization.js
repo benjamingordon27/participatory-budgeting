@@ -8,7 +8,11 @@ import BudgetItem from '../../components/BudgetItem/BudgetItem'
 
 class BudgetItemVisualization extends Component {
 
-    
+    setCenter = (item) => {
+        if(item.longitude && item.latitude){
+            this.props.onZoomIn({lat: item.latitude, lng: item.longitude});
+        }
+    }
 
     render(){
 
@@ -18,7 +22,7 @@ class BudgetItemVisualization extends Component {
             <div>                
                 {this.props.selectedBudgetItems ? 
                     this.props.selectedBudgetItems.map(item => {
-                        return <BudgetItem key={item.title} {...item}/>
+                        return <BudgetItem key={item.title + ' ' + item.description} {...item} clicked={() => this.setCenter(item)}/>
                     })
                 :<p>Budget items will load up here</p>}
             </div>
@@ -29,12 +33,14 @@ class BudgetItemVisualization extends Component {
 const mapStateToProps = state => {
     return {
         selectedBudgetItems: state.subsets.selectedBudgetItems,
+
+        center: state.setMap.center,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        
+        onZoomIn: (center) => dispatch(actions.zoomIn(center)),
     }
 }
 
