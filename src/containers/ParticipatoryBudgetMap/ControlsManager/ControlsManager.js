@@ -138,7 +138,7 @@ const mapStateToProps = state => {
         itemYears: state.participatoryBudget.itemYears,
         itemDistricts: state.participatoryBudget.itemDistricts,
 
-        selectedBudgetItems: state.subsets.selectedBudgetItems,        
+        selectedBudgetItems: state.subsets.selectedBudgetItems,
     }
 }
 

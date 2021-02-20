@@ -47,21 +47,21 @@ const filterBudget = (participatoryBudget, councilMembers, category, year, distr
         newCouncil.push(councilMembers[key])
     })
 
-    if(year != '')
+    if(year !=='')
         newBudget = newBudget.filter(item => item.year === year);
-    if(category != '')
+    if(category !=='')
         newBudget = newBudget.filter(item => item.category === category);
-    if(district != '')
+    if(district !=='')
         newBudget = newBudget.filter(item => item.council_district === district);
-    if(minCost != '')
+    if(minCost !=='')
         newBudget = newBudget.filter(item => Number(item.cost) >= Number(minCost));
-    if(maxCost != '')
+    if(maxCost !=='')
         newBudget = newBudget.filter(item => Number(item.cost) <= Number(maxCost));
-    if(minVotes != '')
+    if(minVotes !=='')
         newBudget = newBudget.filter(item => Number(item.votes) >= Number(minVotes));
-    if(maxVotes != '')
+    if(maxVotes !=='')
         newBudget = newBudget.filter(item => Number(item.votes) <= Number(maxVotes));
-    if(councilMember != ''){        
+    if(councilMember !==''){        
         var currDistrict = newCouncil.filter(member => member.name === councilMember)[[0]].district;        
         newBudget = newBudget.filter(item => item.council_district === currDistrict);
     }

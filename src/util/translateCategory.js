@@ -1,17 +1,3 @@
-let newCategories = ['Culture and Community Facilities',
-    'Schools and Education',
-    'Environment',
-    'Housing',
-    'Parks and Recreation',
-    'Public Health',
-    'Public Safety',
-    'Sanitation',
-    'Seniors',
-    'Streets and Sidewalks',
-    'Transit and Transportation',
-    'Youth',
-    'Previously funded']
-
 const translateCategory = (item) => {
 
     let category = item.category;

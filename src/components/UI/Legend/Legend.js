@@ -8,8 +8,8 @@ const legend = (props) => {
                 {Object.keys(props.legendMarkers).map(key => (
                     <div>
                         {props.zoom <=12 ?
-                            <img src={props.legendMarkers[key].dot}></img>:
-                            <img src={props.legendMarkers[key].img}></img>
+                            <img src={props.legendMarkers[key].dot} alt={key}></img>:
+                            <img src={props.legendMarkers[key].img} alt={key}></img>
                         }                        
                         {key}
                     </div>

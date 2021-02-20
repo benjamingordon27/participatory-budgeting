@@ -1,6 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../utility';
-import { similarSubstring } from 'similar-substring';
 
 const initialState = {    
     currItem: null,
@@ -40,12 +39,12 @@ const initYear = (participatoryBudget) => {
 }
 
 const initDistricts = (participatoryBudget) => {
-    let years = [];
+    let districts = [];
     var keys = Object.keys(participatoryBudget);
     keys.forEach(function(key){
-        years.push(participatoryBudget[key].council_district);
+        districts.push(participatoryBudget[key].council_district);
     });    
-    return years.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a - b);
+    return districts.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a - b);
 }
 
 const findMax = (key, data, councilMembers) => {    
@@ -76,45 +75,6 @@ const loadBudgetSuccess = (state, participatoryBudget) => {
             itemYears: initYear(JSON.parse(participatoryBudget)),
             itemDistricts: initDistricts(JSON.parse(participatoryBudget))
         })
-}
-
-const sortByYear = (participatoryBudget, year) =>{
-    //console.log(participatoryBudget.filter(item => item.vote_year === year))
-    let transformed = [];
-    Object.keys(JSON.parse(participatoryBudget)).map(key => {
-        // console.log('year', year)
-        
-        if(JSON.parse(participatoryBudget)[key].vote_year === year)
-            transformed.push(JSON.parse(participatoryBudget)[key])
-    })
-
-    return transformed;
-}
-
-const sortByDistrict = (participatoryBudget, district) =>{
-    //console.log(participatoryBudget.filter(item => item.vote_year === year))
-    let transformed = [];
-    Object.keys(JSON.parse(participatoryBudget)).map(key => {
-        // console.log('year', year)
-        
-        if(JSON.parse(participatoryBudget)[key].council_district === district)
-            transformed.push(JSON.parse(participatoryBudget)[key])
-    })
-
-    return transformed;
-}
-
-const sortByCategory = (participatoryBudget, category) =>{
-    //console.log(participatoryBudget.filter(item => item.vote_year === year))
-    let transformed = [];
-    Object.keys(JSON.parse(participatoryBudget)).map(key => {
-        // console.log('year', year)
-        
-        if(JSON.parse(participatoryBudget)[key].category === category)
-            transformed.push(JSON.parse(participatoryBudget)[key])
-    })
-
-    return transformed;
 }
 
 const fetchCouncilMembers = (councilMembers) => {

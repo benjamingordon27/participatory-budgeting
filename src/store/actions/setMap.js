@@ -1,6 +1,4 @@
 import * as actionTypes from './actionTypes';
-import axios from '../../axios-order';
-import * as getRequests from './getRequests';
 
 export const zoomMarker = (center) => {
     return {

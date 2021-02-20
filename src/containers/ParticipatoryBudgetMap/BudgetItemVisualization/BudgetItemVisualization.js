@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../../store/actions/index';
-import Spinner from '../../../components/UI/Spinner/Spinner';
 
 import BudgetItem from '../../../components/BudgetItem/BudgetItem'
 

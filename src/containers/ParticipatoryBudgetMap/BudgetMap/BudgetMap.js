@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Spinner from '../../../components/UI/Spinner/Spinner';
 
 import MapMarker from '../../../components/UI/MapMarker/MapMarker';
 import * as actions from '../../../store/actions/index';

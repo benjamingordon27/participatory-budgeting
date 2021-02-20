@@ -5,7 +5,7 @@ import AboutPage from '../AboutPage/AboutPage';
 import ItemsPage from '../ItemsPage/ItemsPage';
 import classes from './HomePage.module.css'
 
-import {Route,NavLink,Switch,Redirect} from 'react-router-dom'
+import {Route,Link,Switch} from 'react-router-dom'
 
 class HomePage extends Component{
     render(){
@@ -14,12 +14,12 @@ class HomePage extends Component{
                 <header>
                     <nav>
                         <ul>                            
-                            <li><NavLink to='/'>Map</NavLink></li>
-                            <li><NavLink to='/statistics'>Statistics</NavLink></li>
-                            <li><NavLink to='/items-page'>Items Page</NavLink></li>
-                            <li><NavLink to='/about'>About</NavLink></li>
-                            {/* <li><NavLink to='/posts' exact>Posts</NavLink></li>
-                            <li><NavLink to={{pathname: '/new-post', hash: '#submit', search: '?quick-submit=true'}}>New Post</NavLink></li> */}
+                            <li><Link to='/'>Map</Link></li>
+                            <li><Link to='/statistics'>Statistics</Link></li>
+                            <li><Link to='/items-page'>Items Page</Link></li>
+                            <li><Link to='/about'>About</Link></li>
+                            {/* <li><Link to='/posts' exact>Posts</Link></li>
+                            <li><Link to={{pathname: '/new-post', hash: '#submit', search: '?quick-submit=true'}}>New Post</Link></li> */}
                         </ul>
                     </nav>
                 </header>  

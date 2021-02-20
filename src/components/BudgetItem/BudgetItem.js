@@ -1,14 +1,6 @@
-import React, {Component} from 'react';
+import React from 'react';
 import classes from './BudgetItem.module.css'
-
-var priceFormatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',      
-});
-
-var numberFormatter = (num) => {
-    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+import {priceFormatter, numberFormatter} from '../../util/numberFormatting'
 
 const budgetItem = (props) => {
 
@@ -30,7 +22,7 @@ const budgetItem = (props) => {
                 : null}                    
                 {props.longitude && props.latitude ?
                     <React.Fragment>
-                        <a href = '#'>Click to focus</a>
+                        <p style={{color: 'blue'}}><u>Click to focus</u></p>
                     </React.Fragment>
                     :''
                 }
