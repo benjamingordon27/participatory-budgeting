@@ -1,9 +1,10 @@
 import * as actionTypes from './actionTypes';
 
-export const zoomMarker = (center) => {
+export const zoomMarker = (center, item) => {
     return {
         type: actionTypes.ZOOM_MARKER,
         center: center,
+        item: item,
     }
 }
 

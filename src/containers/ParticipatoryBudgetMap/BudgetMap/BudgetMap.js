@@ -37,8 +37,8 @@ class BudgetMap extends Component{
         }  
     }
 
-    markerClicked = (center) => {        
-        this.props.onZoomMarker(center);
+    markerClicked = (center, item) => {        
+        this.props.onZoomMarker(center, item);
     }
 
     render(){     
@@ -55,12 +55,14 @@ class BudgetMap extends Component{
                     width={'30px'}
                     height={'30px'}
                     zoom={this.props.zoom} ////figure out how to change on zoom change, might have to be rendered not in an array in component but in render itself
-                    clicked={() => this.markerClicked({ lat: item.latitude, lng: item.longitude })}/>
+                    clicked={() => this.markerClicked({ lat: item.latitude, lng: item.longitude }, item)}/>
                 );
             })
         }
 
         console.log('[BudgetMap.js]', this.props)
+        console.log('clicked item?', this.props.clickedItem);
+        
 
         return(
             <div style={{ height: '87vh', width: '100%' }}>
@@ -94,6 +96,7 @@ const mapStateToProps = state => {
         mapProps: state.setMap.mapProps,        
         center: state.setMap.center,
         zoom: state.setMap.zoom,
+        clickedItem: state.setMap.clickedItem,
         selectedBudgetItems: state.subsets.selectedBudgetItems,
     }
 }
@@ -103,7 +106,7 @@ const mapDispatchToProps = dispatch => {
         onSetMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems) => dispatch(actions.setMap(districts, selectedDistricts, councilMembers, selectedBudgetItems)),  
         onUpdateMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems, showDistricts) => dispatch(actions.updateMap(districts, selectedDistricts, councilMembers, selectedBudgetItems, showDistricts)),  
         onResetMap: () => dispatch(actions.resetMap()),
-        onZoomMarker: (center) => dispatch(actions.zoomMarker(center)),           
+        onZoomMarker: (center, item) => dispatch(actions.zoomMarker(center, item)),           
     }
 }
 

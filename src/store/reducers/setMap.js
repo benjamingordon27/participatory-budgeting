@@ -11,6 +11,7 @@ const initialState = {
     markers: [],
     center: DEFAULT_CENTER,
     showDistricts: false,
+    clickedItem: null,
 }
 
 const setMap = (state,districts, selectedDistricts, councilMembers, selectedBudgetItems) => {  
@@ -28,8 +29,8 @@ const reducer = (state = initialState, action) => {
     switch(action.type){
         case actionTypes.SET_MAP: return updateObject(state, {mapProps: setMap(state,action.districts, action.selectedDistricts, action.councilMembers, action.selectedBudgetItems)})        
         case actionTypes.UPDATE_MAP: return updateObject(state, {mapProps: setMap(state,action.districts, action.selectedDistricts, action.councilMembers, action.selectedBudgetItems)})        
-        case actionTypes.RESET_MAP: return updateObject(state, {map: <Spinner />})        
-        case actionTypes.ZOOM_MARKER: return updateObject(state, {zoom: 14, center: action.center})        
+        case actionTypes.RESET_MAP: return updateObject(state, {map: <Spinner />, clickedItem: null})        
+        case actionTypes.ZOOM_MARKER: return updateObject(state, {zoom: 14, center: action.center, clickedItem: action.item})        
         case actionTypes.ZOOM_IN: return updateObject(state, {zoom: state.zoom + 1})
         case actionTypes.ZOOM_OUT: return updateObject(state, {zoom: state.zoom - 1})
         case actionTypes.CENTER: return updateObject(state, {zoom: 11, center: DEFAULT_CENTER})

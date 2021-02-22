@@ -47,8 +47,9 @@ const filterBudget = (participatoryBudget, councilMembers, category, year, distr
         newCouncil.push(councilMembers[key])
     })
 
+
     if(year !=='')
-        newBudget = newBudget.filter(item => item.year === year);
+        newBudget = newBudget.filter(item => Number(item.vote_year) === Number(year));
     if(category !=='')
         newBudget = newBudget.filter(item => item.category === category);
     if(district !=='')
@@ -77,6 +78,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.BUDGET_BY_YEAR: return updateObject(state, {selectedBudgetItems: sortByYear(action.budget, action.year)})
         case actionTypes.BUDGET_BY_DISTRICT: return updateObject(state, {selectedBudgetItems: sortByDistrict(action.budget, action.district)})
         case actionTypes.BUDGET_BY_CATEGORY: return updateObject(state, {selectedBudgetItems: sortByCategory(action.budget, action.category)})
+        case actionTypes.RESET_SELECTED_ITEMS: return updateObject(state, {selectedBudgetItems: []})
         default:
             return state;
     }

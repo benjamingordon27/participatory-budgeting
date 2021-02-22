@@ -13,11 +13,11 @@ class ParticipatoryBudgetMap extends Component {
                 <p>Find current participatory budget requests here: <a href='http://ideas.pbnyc.org/page/about' target='_blank' rel='noreferrer' style={{color: 'blue'}} >http://ideas.pbnyc.org/page/about</a>, <a href='https://council.nyc.gov/pb/' target='_blank' rel='noreferrer' style={{color: 'blue'}}>https://council.nyc.gov/pb/</a></p>                
                 <ControlsManager />
                 <div className="row">
-                    <div style={{width: '40%', height:'100vh', left: '0', right: '0',overflowY: 'scroll'}}>
-                    <BudgetItemVisualization />
-                    </div>
-                    <BudgetMap />
                     <LegendManager />
+                    <BudgetMap />
+                    <div style={{width: '40%', height:'100vh', left: '0', right: '0',overflowY: 'scroll'}}>
+                        <BudgetItemVisualization />
+                    </div>                    
                 </div>
             </div>
         );

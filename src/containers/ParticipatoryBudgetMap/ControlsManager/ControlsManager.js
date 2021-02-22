@@ -9,6 +9,8 @@ import Input from '../../../components/UI/Input/Input';
 class ControlsManager extends Component {
 
     state = {
+        firstPageLoad: false,
+        
         selectedYear: '',
         selectedCategory: '',
         selectedDistrict: '',
@@ -20,7 +22,25 @@ class ControlsManager extends Component {
     }
 
     componentDidMount(){        
-        this.props.onInitBudget();        
+        this.props.onInitBudget();               
+    }
+
+    componentDidUpdate(prevProps, prevState){        
+
+        if(!this.state.firstPageLoad && this.props.participatoryBudget){
+            this.props.onBudgetFilter(this.props.participatoryBudget, this.props.councilMembers,
+                this.state.selectedCategory, 
+                this.state.selectedYear, 
+                this.state.selectedDistrict, 
+                this.state.minCost, 
+                this.state.maxCost,
+                this.state.minVotes, 
+                this.state.maxVotes,   
+                this.state.councilMember,                 
+                )
+
+            this.setState({firstPageLoad: true}) 
+        }
     }
 
     itemsByYear = (event) => {                
@@ -73,6 +93,8 @@ class ControlsManager extends Component {
             maxVotes: '',
             councilMember: '',
         })
+
+        this.props.onResetSelectedItems();
     }
 
     render(){
@@ -144,6 +166,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
+        onResetSelectedItems: () => dispatch(actions.resetSelectedItems()),
         onInitBudget: () => dispatch(actions.initBudget()),  
         onBudgetByYear: (budget, year) => dispatch(actions.budgetByYear(budget,year)),
         onBudgetByCategory: (budget, category) => dispatch(actions.budgetByCategory(budget,category)),

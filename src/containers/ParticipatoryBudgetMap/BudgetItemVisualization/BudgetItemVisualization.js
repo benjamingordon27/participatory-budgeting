@@ -37,8 +37,15 @@ class BudgetItemVisualization extends Component {
         }
         
         return(
-            <div>                                
-                {this.props.selectedBudgetItems ? budgetItems : <p>Budget items will load here</p>}                
+            <div>                                                
+                {this.props.selectedBudgetItems && !this.props.clickedItem ? budgetItems : null}
+                {this.props.clickedItem ? 
+                    <BudgetItem 
+                        {...this.props.clickedItem} 
+                        councilMember={this.findDistrict(this.props.clickedItem.council_district)} 
+                        clicked={() => this.setCenter(this.props.clickedItem)}
+                />
+                :budgetItems}
             </div>
         );
     }
@@ -50,6 +57,7 @@ const mapStateToProps = state => {
         councilMembers: state.participatoryBudget.councilMembers,        
         
         center: state.setMap.center,
+        clickedItem: state.setMap.clickedItem,
     }
 }
 

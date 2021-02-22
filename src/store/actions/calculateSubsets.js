@@ -24,6 +24,12 @@ export const budgetByDistrict = (budget, district) => {
     }
 }
 
+export const resetSelectedItems = () => {    
+    return {
+        type: actionTypes.RESET_SELECTED_ITEMS,
+    }
+}
+
 export const budgetFilter = (budget, councilMembers, category, year, district, minCost, maxCost, minVotes, maxVotes, councilMember) => {    
     return {
         type: actionTypes.BUDGET_FILTER,

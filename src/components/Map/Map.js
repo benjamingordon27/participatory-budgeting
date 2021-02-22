@@ -1,5 +1,6 @@
 import React from 'react';
 import GoogleMapReact from 'google-map-react';
+// import polygonCenter from 'geojson-polygon-center';
 
 import config from './mapConfig';
 
@@ -27,12 +28,14 @@ const renderDistricts = (map, maps, coords, selectedDistricts, councilMembers, s
                     indexID: currDistrict,
                 });     
                 
-                                
+                // var center = polygonCenter(polygon.geometry)
+                // console.log('center', polygonCenter(coords.features[key].geometry));
+
                 districtPolygons.push(councilDistrictPolygon);
                 // polygonCoords.push(coordArr);
                 var districtInfo = councilMembers.filter(item => item.district === currDistrict);                                
 
-                addListenersOnPolygon(map,maps,councilDistrictPolygon, districtInfo);
+                // addListenersOnPolygon(map,maps,councilDistrictPolygon, districtInfo);
             });            
             allDistrictPolygons[key] = {district: coords.features[key].properties.coun_dist,polygons: districtPolygons};
         });

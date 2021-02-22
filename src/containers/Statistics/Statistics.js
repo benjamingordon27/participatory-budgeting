@@ -4,8 +4,6 @@ import * as actions from '../../store/actions/index';
 import * as d3 from "d3";
 import Spinner from '../../components/UI/Spinner/Spinner';
 import HorizontalBarChart from '../../components/D3/HorizontalBarChart/HorizontalBarChart';
-import VerticalBarChart from '../../components/D3/VerticalBarChart/VerticalBarChart';
-// import {drawChart} from '../../components/D3/BarChart/BarChart';
 
 class Statistics extends Component{    
 
@@ -62,15 +60,21 @@ class Statistics extends Component{
             if(filteredArray.length > 0)                
                 var currCouncilMember = filteredArray[[0]].name;
             
-            var sum = 0;
+            var sumCount = 0;
+            var sumVotes = 0;
             budgetAsArray.filter(i => item === i.council_district.match(/\d+/)[0]).map(item => {
-                sum = sum + Number(item.cost)
+                sumCount = sumCount + Number(item.cost);
+                if(!isNaN(item.votes))
+                    sumVotes = sumVotes + Number(item.votes);
             })
+
+
             outputDistrictData.push(                
                 {
                     title: `District ${item}: ${currCouncilMember}`, 
                     count: budgetAsArray.filter(i => item === i.council_district.match(/\d+/)[0]).length,
-                    cost: sum,
+                    cost: sumCount,
+                    votes: sumVotes,
                 }
             );
         })
@@ -98,6 +102,24 @@ class Statistics extends Component{
             // data = '';
             data = 
                 <div>
+
+                    <HorizontalBarChart 
+                        key={'districtVotesCount'}
+                        reference='districtVotesCountBarChart' 
+                        width={1200} 
+                        height={400} 
+                        draw={true} 
+                        dataToGraph={this.itemsPerDistrict(this.props.participatoryBudget, this.props.councilMembers, 10, 'votes')} 
+                        variable={'votes'}
+                        margin = {{top: 40, right: 20, bottom: 50, left: 320}}
+                        xAxisLabel = {'Total Votes'}
+                        chartTitle = 'The Top 10 Districts for Participatory Budget Items by Votes'
+                        padding = {0.2}
+                        rectColor = {'blue'}
+                        numberColor = {'white'}
+                        dollar = {false}
+                        labelClicked = {this.showItem}                        
+                    />
 
                     <HorizontalBarChart 
                         key={'districtCount'}
