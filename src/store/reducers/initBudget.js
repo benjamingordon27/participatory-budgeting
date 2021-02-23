@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../utility';
+import {translateCategoryText} from '../../util/translateCategory';
 
 const initialState = {    
     currItem: null,
@@ -19,12 +20,16 @@ const initialState = {
     loaded: false,
 }
 
-const initCategory = (participatoryBudget) => {
+const initCategory = (participatoryBudget) => {    
+
     let categories = [];
     var keys = Object.keys(participatoryBudget);
     keys.forEach(function(key){
-        categories.push(participatoryBudget[key].category);
-    });    
+        if(participatoryBudget[key].category)
+            categories.push(translateCategoryText(participatoryBudget[key].category));
+        // else
+            // categories.push(participatoryBudget[key].category);
+    });
 
     return categories.filter((v, i, a) => a.indexOf(v) === i).sort();
 }

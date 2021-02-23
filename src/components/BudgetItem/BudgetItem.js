@@ -20,9 +20,9 @@ const budgetItem = (props) => {
                         <strong>Current Council Member:</strong> {props.councilMember[0].name}, {props.councilMember[0].political_party}<br></br>
                     </React.Fragment>
                 : null}                    
-                {props.longitude && props.latitude ?
+                {props.clicked && props.longitude && props.latitude ?
                     <React.Fragment>
-                        <p style={{color: 'blue'}}><u>Click to focus</u></p>
+                        <a><p style={{color: 'blue'}}><u>Click to focus</u></p></a>
                     </React.Fragment>
                     :''
                 }

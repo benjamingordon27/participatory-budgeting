@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import MapMarker from '../../../components/UI/MapMarker/MapMarker';
 import * as actions from '../../../store/actions/index';
-import translateCategory from '../../../util/translateCategory';
+import {translateCategory} from '../../../util/translateCategory';
 
 import Map from '../../../components/Map/Map';
 

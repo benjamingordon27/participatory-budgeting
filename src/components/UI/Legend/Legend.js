@@ -11,7 +11,7 @@ const legend = (props) => {
                             <img src={props.legendMarkers[key].dot} alt={key}></img>:
                             <img src={props.legendMarkers[key].img} alt={key}></img>
                         }                        
-                        {key}
+                        {' '}{key}
                     </div>
                 ))}
             

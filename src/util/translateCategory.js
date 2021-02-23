@@ -1,4 +1,4 @@
-const translateCategory = (item) => {
+export const translateCategory = (item) => {
 
     let category = item.category;
 
@@ -27,4 +27,33 @@ const translateCategory = (item) => {
     //     return item;
 }
 
-export default translateCategory;
+export const translateCategoryText = (category) => {
+
+    if( category.includes('Health and Environment')) return ('Public Health');
+    if( category === 'Public Safety & Public Health') return ('Public Safety');
+
+    if( category.includes('Safety')) return ('Public Safety');
+    if( category.includes('Communit') || category.includes('Cultur') || category.includes('District-Wide Priorities')) return ('Culture and Community Facilities');
+    if( category.includes('School') || category.includes('Education') || category.includes('Librar')) return ('Schools and Education');
+    if( category.includes('Environment')) return ('Environment');
+    
+    if( category.includes('Recreation') || category.includes('Parks')) return ('Parks and Recreation');
+    if( category.includes('Health')) return ('Public Health');
+    
+    // if( category.includes('')) return {...item, pinCategory: 'Previously funded'};
+    
+    if( category.includes('Housing')) return ('Housing');
+    if( category.includes('Sanitation')) return ('Sanitation');
+    if( category.includes('Senior')) return ('Seniors');
+    if( category.includes('Streets')) return ('Streets and Sidewalks');
+    if( category.includes('Transit') || category.includes('Transportation')) return ('Transit and Transportation');
+    if( category.includes('Youth')) return ('Youth');
+
+    else
+        return category;
+
+    // if( category.includes('Save your money') || category.includes('Save your money')) return {...item, pinCategory: 'Previously funded'}
+    // default)
+    //     return item;
+}
+

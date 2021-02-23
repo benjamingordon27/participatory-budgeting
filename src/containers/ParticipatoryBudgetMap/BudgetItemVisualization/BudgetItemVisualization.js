@@ -43,7 +43,7 @@ class BudgetItemVisualization extends Component {
                     <BudgetItem 
                         {...this.props.clickedItem} 
                         councilMember={this.findDistrict(this.props.clickedItem.council_district)} 
-                        clicked={() => this.setCenter(this.props.clickedItem)}
+                        // clicked={() => this.setCenter(this.props.clickedItem)}
                 />
                 :budgetItems}
             </div>

@@ -1,5 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import {updateObject} from '../utility';
+import {translateCategory, translateCategoryText} from '../../util/translateCategory';
 
 const initialState = {            
     selectedBudgetItems: null,
@@ -51,7 +52,7 @@ const filterBudget = (participatoryBudget, councilMembers, category, year, distr
     if(year !=='')
         newBudget = newBudget.filter(item => Number(item.vote_year) === Number(year));
     if(category !=='')
-        newBudget = newBudget.filter(item => item.category === category);
+        newBudget = newBudget.filter(item => translateCategoryText(item.category) === category);    
     if(district !=='')
         newBudget = newBudget.filter(item => item.council_district === district);
     if(minCost !=='')
