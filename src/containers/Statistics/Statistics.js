@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
-import * as d3 from "d3";
+import {translateCategory, translateCategoryText} from '../../util/translateCategory';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import HorizontalBarChart from '../../components/D3/HorizontalBarChart/HorizontalBarChart';
+import Dropdown from '../../components/UI/Dropdown/Dropdown';
+import Button from '../../components/UI/Button/Button';
+import Input from '../../components/UI/Input/Input';
 
 class Statistics extends Component{    
 
@@ -90,6 +93,53 @@ class Statistics extends Component{
         return data;        
     }
 
+    itemsPerCategory = (budget, howMany, variable) => {
+        let budgetAsArray = budget;
+        let outputCategoryData = [];
+
+        let categories = [];
+        var keys = Object.keys(budget);
+        keys.forEach(function(key){
+            categories.push(translateCategoryText(budget[key].category));
+        });    
+        let allCategories = categories.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a - b);
+
+        allCategories.map(item => {
+            var sumCount = 0;
+            var sumCost = 0;
+            var sumVotes = 0;
+            budgetAsArray.filter(i => item === translateCategoryText(i.category)).map(item => {
+                sumCost = sumCost + Number(item.cost);
+                if(!isNaN(item.votes))
+                    sumVotes = sumVotes + Number(item.votes);
+                sumCount = sumCount + 1;
+            })            
+            
+            console.log(sumCount)
+
+            outputCategoryData.push(                
+                {
+                    title: `Category: ${item}`, 
+                    count: sumCount,
+                    cost: sumCost,
+                    votes: sumVotes,
+                }
+            );
+            
+        })
+
+
+        outputCategoryData.sort((a, b) => (Number(a[variable]) < Number(b[variable])) ? 1 : -1)
+        outputCategoryData.splice(howMany,outputCategoryData.length-howMany);  
+
+        
+
+        // let data = budgetAsArray.map(item => Number(item[this.props.variable]));
+        let data = outputCategoryData;
+        data.forEach(item => item[variable] = Number(item[variable]));                
+        return data;        
+    }
+
     showItem(item){
         console.log('has the item been clicked?', item)
     }
@@ -102,6 +152,78 @@ class Statistics extends Component{
             // data = '';
             data = 
                 <div>
+
+                        {/* <Dropdown message={'Items by Council Member'} title= {'Council Member'} list={this.props.councilMembersList} handleChange={this.councilMemberState}/>
+                        <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>
+                        <Dropdown message={'Items by year'} title={'Year'} list={this.props.itemYears} handleChange={this.itemsByYear}/>
+                        <Dropdown message={'Items by category'} title={'Category'} list={this.props.itemCategories} handleChange={this.itemsByCategory}/>
+                         */}
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+                    <br></br>
+
+                    <HorizontalBarChart 
+                        key={'categoryCost'}
+                        reference='categoryCostBarChart' 
+                        width={1200} 
+                        height={400} 
+                        draw={true} 
+                        dataToGraph={this.itemsPerCategory(this.props.participatoryBudget, 5, 'cost')} 
+                        variable={'cost'}
+                        margin = {{top: 40, right: 20, bottom: 50, left: 320}}
+                        xAxisLabel = {'Total Cost'}
+                        chartTitle = 'The Top 5 Categories for Participatory Budget Items by Cost'
+                        padding = {0.2}
+                        rectColor = {'blue'}
+                        numberColor = {'white'}
+                        dollar = {true}
+                        labelClicked = {this.showItem}                    
+                    />
+
+                    <HorizontalBarChart 
+                        key={'categoryCount'}
+                        reference='categoryCostBarCount' 
+                        width={1200} 
+                        height={400} 
+                        draw={true} 
+                        dataToGraph={this.itemsPerCategory(this.props.participatoryBudget, 5, 'count')} 
+                        variable={'count'}
+                        margin = {{top: 40, right: 20, bottom: 50, left: 320}}
+                        xAxisLabel = {'Total Count'}
+                        chartTitle = 'The Top 5 Categories for Participatory Budget Items by Count'
+                        padding = {0.2}
+                        rectColor = {'blue'}
+                        numberColor = {'white'}
+                        dollar = {false}
+                        labelClicked = {this.showItem}                        
+                    />
+
+                    <HorizontalBarChart 
+                        key={'categoryVotesCount'}
+                        reference='categoryVotesCountBarChart' 
+                        width={1200} 
+                        height={400} 
+                        draw={true} 
+                        dataToGraph={this.itemsPerCategory(this.props.participatoryBudget, 5, 'votes')} 
+                        variable={'votes'}
+                        margin = {{top: 40, right: 20, bottom: 50, left: 320}}
+                        xAxisLabel = {'Total Votes'}
+                        chartTitle = 'The Top 5 Categories for Participatory Budget Items by Votes'
+                        padding = {0.2}
+                        rectColor = {'blue'}
+                        numberColor = {'white'}
+                        dollar = {false}
+                        labelClicked = {this.showItem}                        
+                    />
 
                     <HorizontalBarChart 
                         key={'districtVotesCount'}
@@ -158,7 +280,7 @@ class Statistics extends Component{
                     />
 
                     <HorizontalBarChart 
-                        key={'cost'}
+                        key={'costBarChart'}
                         reference='costBarChart' 
                         width={1200} 
                         height={400} 
@@ -176,7 +298,7 @@ class Statistics extends Component{
                     />
 
                     <HorizontalBarChart 
-                        key={'votes'}
+                        key={'votesBarChart'}
                         reference='votesBarChart' 
                         width={1200} 
                         height={400} 
@@ -194,7 +316,7 @@ class Statistics extends Component{
                     />
 
                     <HorizontalBarChart
-                        key={'cost'}
+                        key={'lowCostBarChart'}
                         reference='lowCostBarChart' 
                         width={1200} 
                         height={400} 
@@ -212,7 +334,7 @@ class Statistics extends Component{
                     />
 
                     <HorizontalBarChart 
-                        key={'votes'}
+                        key={'lowVotesBarChart'}
                         reference='lowVotesBarChart' 
                         width={1200} 
                         height={400} 

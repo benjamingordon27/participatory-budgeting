@@ -75,7 +75,7 @@ class HorizontalBarChart extends Component {
                         {/* Draw the labels on the bars */}
                         {data.map((d,idx) => (
                                 <text            
-                                    style = {{textAnchor: 'end',fill: this.props.numberColor}}                        
+                                    style = {{textAnchor: 'end', fill: this.props.numberColor}}                        
                                     dy='1.1em'
                                     x={xScale(d[this.props.variable]) - 5} 
                                     y={yScale(d.title)+this.props.padding*0.5} 
