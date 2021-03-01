@@ -1,144 +1,17 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
-import {translateCategory, translateCategoryText} from '../../util/translateCategory';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import HorizontalBarChart from '../../components/D3/HorizontalBarChart/HorizontalBarChart';
-import Dropdown from '../../components/UI/Dropdown/Dropdown';
-import Button from '../../components/UI/Button/Button';
-import Input from '../../components/UI/Input/Input';
+import BigNumber from '../../components/BigNumber/BigNumber';
+import * as stats from './statisticHelpers'
 
 class Statistics extends Component{    
 
     componentDidMount(){        
         if(!this.props.participatoryBudget && !this.props.districts && !this.props.councilMembers)
             this.props.onInitBudget();    
-    }
-
-    topTenItemsSorted(howMany, budget, variable){
-        let budgetAsArray = budget;
-
-        budgetAsArray = budgetAsArray.filter(item => !isNaN(item[variable]));        
-
-        budgetAsArray.sort((a, b) => (Number(a[variable]) < Number(b[variable])) ? 1 : -1)
-        budgetAsArray.splice(howMany,budgetAsArray.length-howMany);  
-
-        // let data = budgetAsArray.map(item => Number(item[this.props.variable]));
-        let data = budgetAsArray;
-        data.forEach(item => item[variable] = Number(item[variable]));
-        
-        return data;
-    }
-
-    bottomTenItemsSorted(howMany, budget, variable){
-        let budgetAsArray = budget;
-
-        budgetAsArray = budgetAsArray.filter(item => !isNaN(item[variable]));        
-
-        budgetAsArray.sort((a, b) => (Number(a[variable]) > Number(b[variable])) ? 1 : -1)
-        budgetAsArray.splice(howMany,budgetAsArray.length-howMany);  
-
-        // let data = budgetAsArray.map(item => Number(item[this.props.variable]));
-        let data = budgetAsArray;
-        data.forEach(item => item[variable] = Number(item[variable]));
-        
-        return data;
-    }
-
-    itemsPerDistrict(budget, councilMembers, howMany, variable){
-        let budgetAsArray = budget;        
-        
-        let outputDistrictData = [];
-
-        let districts = [];
-        var keys = Object.keys(councilMembers);
-        keys.forEach(function(key){
-            districts.push(councilMembers[key].district);
-        });    
-        let allDistricts = districts.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a - b);
-
-        allDistricts.map(item => {            
-            var currCouncilMember = ''
-            var filteredArray = councilMembers.filter(i => item === i.district.match(/\d+/)[0]);
-            if(filteredArray.length > 0)                
-                var currCouncilMember = filteredArray[[0]].name;
-            
-            var sumCount = 0;
-            var sumVotes = 0;
-            budgetAsArray.filter(i => item === i.council_district.match(/\d+/)[0]).map(item => {
-                sumCount = sumCount + Number(item.cost);
-                if(!isNaN(item.votes))
-                    sumVotes = sumVotes + Number(item.votes);
-            })
-
-
-            outputDistrictData.push(                
-                {
-                    title: `District ${item}: ${currCouncilMember}`, 
-                    count: budgetAsArray.filter(i => item === i.council_district.match(/\d+/)[0]).length,
-                    cost: sumCount,
-                    votes: sumVotes,
-                }
-            );
-        })
-
-
-        outputDistrictData.sort((a, b) => (Number(a[variable]) < Number(b[variable])) ? 1 : -1)
-        outputDistrictData.splice(howMany,outputDistrictData.length-howMany);  
-
-        // let data = budgetAsArray.map(item => Number(item[this.props.variable]));
-        let data = outputDistrictData;
-        data.forEach(item => item[variable] = Number(item[variable]));        
-        console.log(data)
-        return data;        
-    }
-
-    itemsPerCategory = (budget, howMany, variable) => {
-        let budgetAsArray = budget;
-        let outputCategoryData = [];
-
-        let categories = [];
-        var keys = Object.keys(budget);
-        keys.forEach(function(key){
-            categories.push(translateCategoryText(budget[key].category));
-        });    
-        let allCategories = categories.filter((v, i, a) => a.indexOf(v) === i).sort((a, b) => a - b);
-
-        allCategories.map(item => {
-            var sumCount = 0;
-            var sumCost = 0;
-            var sumVotes = 0;
-            budgetAsArray.filter(i => item === translateCategoryText(i.category)).map(item => {
-                sumCost = sumCost + Number(item.cost);
-                if(!isNaN(item.votes))
-                    sumVotes = sumVotes + Number(item.votes);
-                sumCount = sumCount + 1;
-            })            
-            
-            console.log(sumCount)
-
-            outputCategoryData.push(                
-                {
-                    title: `Category: ${item}`, 
-                    count: sumCount,
-                    cost: sumCost,
-                    votes: sumVotes,
-                }
-            );
-            
-        })
-
-
-        outputCategoryData.sort((a, b) => (Number(a[variable]) < Number(b[variable])) ? 1 : -1)
-        outputCategoryData.splice(howMany,outputCategoryData.length-howMany);  
-
-        
-
-        // let data = budgetAsArray.map(item => Number(item[this.props.variable]));
-        let data = outputCategoryData;
-        data.forEach(item => item[variable] = Number(item[variable]));                
-        return data;        
-    }
+    }     
 
     showItem(item){
         console.log('has the item been clicked?', item)
@@ -152,32 +25,73 @@ class Statistics extends Component{
             // data = '';
             data = 
                 <div>
+                    <BigNumber label={'The total amount of money voted on in participatory budgeting from 2012-2017 is: '} dollar={true} number={stats.totalSum(this.props.participatoryBudget, 'cost')} />                    
+                    <BigNumber label={'The total amount of votes cast in participatory budgeting from 2012-2017 is: '} dollar={false} number={stats.totalSum(this.props.participatoryBudget, 'votes')} />
 
-                        {/* <Dropdown message={'Items by Council Member'} title= {'Council Member'} list={this.props.councilMembersList} handleChange={this.councilMemberState}/>
-                        <Dropdown message={'Items by district'} title= {'Districts'} list={this.props.itemDistricts} handleChange={this.itemsByDistrict}/>
-                        <Dropdown message={'Items by year'} title={'Year'} list={this.props.itemYears} handleChange={this.itemsByYear}/>
-                        <Dropdown message={'Items by category'} title={'Category'} list={this.props.itemCategories} handleChange={this.itemsByCategory}/>
-                         */}
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
-                    <br></br>
+                    <HorizontalBarChart 
+                        key={'yearCost'}
+                        reference='yearCostBarChart' 
+                        width={1000} 
+                        height={400} 
+                        draw={true} 
+                        dataToGraph={stats.itemsPerYear(this.props.participatoryBudget)} 
+                        variable={'cost'}
+                        margin = {{top: 40, right: 20, bottom: 50, left: 320}}
+                        xAxisLabel = {'Total Cost by Year'}
+                        chartTitle = 'Total Cost by Year'
+                        padding = {0.2}
+                        rectColor = {'blue'}
+                        numberColor = {'white'}
+                        dollar = {true}
+                        labelClicked = {this.showItem}
+                        description = {''}
+                    />
 
+                    <HorizontalBarChart 
+                        key={'yearCount'}
+                        reference='yearCountBarChart' 
+                        width={1000} 
+                        height={400} 
+                        draw={true} 
+                        dataToGraph={stats.itemsPerYear(this.props.participatoryBudget)} 
+                        variable={'count'}
+                        margin = {{top: 40, right: 20, bottom: 50, left: 320}}
+                        xAxisLabel = {'Total Budget Items by Year'}
+                        chartTitle = 'Total Budget Items by Year'
+                        padding = {0.2}
+                        rectColor = {'blue'}
+                        numberColor = {'white'}
+                        dollar = {false}
+                        labelClicked = {this.showItem}
+                        description = {''}
+                    />
+
+                    <HorizontalBarChart 
+                        key={'yearVotes'}
+                        reference='yearVotesBarChart' 
+                        width={1000} 
+                        height={400} 
+                        draw={true} 
+                        dataToGraph={stats.itemsPerYear(this.props.participatoryBudget)} 
+                        variable={'votes'}
+                        margin = {{top: 40, right: 20, bottom: 50, left: 320}}
+                        xAxisLabel = {'Total Votes Counted by Year'}
+                        chartTitle = 'Total Votes Counted by Year'
+                        padding = {0.2}
+                        rectColor = {'blue'}
+                        numberColor = {'white'}
+                        dollar = {false}
+                        labelClicked = {this.showItem}
+                        description = {''}
+                    />
+                    
                     <HorizontalBarChart 
                         key={'categoryCost'}
                         reference='categoryCostBarChart' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.itemsPerCategory(this.props.participatoryBudget, 5, 'cost')} 
+                        dataToGraph={stats.itemsPerCategory(this.props.participatoryBudget, 5, 'cost')} 
                         variable={'cost'}
                         margin = {{top: 40, right: 20, bottom: 50, left: 320}}
                         xAxisLabel = {'Total Cost'}
@@ -186,16 +100,17 @@ class Statistics extends Component{
                         rectColor = {'blue'}
                         numberColor = {'white'}
                         dollar = {true}
-                        labelClicked = {this.showItem}                    
+                        labelClicked = {this.showItem}
+                        description = {'The top five categories in terms of money raised in participatory budgeting from 2012-2017 are:'}
                     />
 
                     <HorizontalBarChart 
                         key={'categoryCount'}
                         reference='categoryCostBarCount' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.itemsPerCategory(this.props.participatoryBudget, 5, 'count')} 
+                        dataToGraph={stats.itemsPerCategory(this.props.participatoryBudget, 5, 'count')} 
                         variable={'count'}
                         margin = {{top: 40, right: 20, bottom: 50, left: 320}}
                         xAxisLabel = {'Total Count'}
@@ -204,16 +119,17 @@ class Statistics extends Component{
                         rectColor = {'blue'}
                         numberColor = {'white'}
                         dollar = {false}
-                        labelClicked = {this.showItem}                        
+                        labelClicked = {this.showItem}
+                        description = {'The top five categories in terms of count in participatory budgeting from 2012-2017 are:'}
                     />
 
                     <HorizontalBarChart 
                         key={'categoryVotesCount'}
                         reference='categoryVotesCountBarChart' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.itemsPerCategory(this.props.participatoryBudget, 5, 'votes')} 
+                        dataToGraph={stats.itemsPerCategory(this.props.participatoryBudget, 5, 'votes')} 
                         variable={'votes'}
                         margin = {{top: 40, right: 20, bottom: 50, left: 320}}
                         xAxisLabel = {'Total Votes'}
@@ -222,16 +138,17 @@ class Statistics extends Component{
                         rectColor = {'blue'}
                         numberColor = {'white'}
                         dollar = {false}
-                        labelClicked = {this.showItem}                        
+                        labelClicked = {this.showItem}
+                        description = {'The top five categories in terms of votes in participatory budgeting from 2012-2017 are:'}
                     />
 
                     <HorizontalBarChart 
                         key={'districtVotesCount'}
                         reference='districtVotesCountBarChart' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.itemsPerDistrict(this.props.participatoryBudget, this.props.councilMembers, 10, 'votes')} 
+                        dataToGraph={stats.itemsPerDistrict(this.props.participatoryBudget, this.props.councilMembers, 10, 'votes')} 
                         variable={'votes'}
                         margin = {{top: 40, right: 20, bottom: 50, left: 320}}
                         xAxisLabel = {'Total Votes'}
@@ -246,10 +163,10 @@ class Statistics extends Component{
                     <HorizontalBarChart 
                         key={'districtCount'}
                         reference='districtCountBarChart' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.itemsPerDistrict(this.props.participatoryBudget, this.props.councilMembers, 10, 'count')} 
+                        dataToGraph={stats.itemsPerDistrict(this.props.participatoryBudget, this.props.councilMembers, 10, 'count')} 
                         variable={'count'}
                         margin = {{top: 40, right: 20, bottom: 50, left: 320}}
                         xAxisLabel = {'Count'}
@@ -264,10 +181,10 @@ class Statistics extends Component{
                     <HorizontalBarChart 
                         key={'districtCost'}
                         reference='districtCostBarChart' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.itemsPerDistrict(this.props.participatoryBudget, this.props.councilMembers, 10, 'cost')} 
+                        dataToGraph={stats.itemsPerDistrict(this.props.participatoryBudget, this.props.councilMembers, 10, 'cost')} 
                         variable={'cost'}
                         margin = {{top: 40, right: 20, bottom: 50, left: 320}}
                         xAxisLabel = {'Cost'}
@@ -282,10 +199,10 @@ class Statistics extends Component{
                     <HorizontalBarChart 
                         key={'costBarChart'}
                         reference='costBarChart' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.topTenItemsSorted(10, this.props.participatoryBudget, 'cost')} 
+                        dataToGraph={stats.topTenItemsSorted(10, this.props.participatoryBudget, 'cost')} 
                         variable={'cost'}
                         margin = {{top: 40, right: 20, bottom: 50, left: 320}}
                         xAxisLabel = {'Cost'}
@@ -300,10 +217,10 @@ class Statistics extends Component{
                     <HorizontalBarChart 
                         key={'votesBarChart'}
                         reference='votesBarChart' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.topTenItemsSorted(10, this.props.participatoryBudget, 'votes')} 
+                        dataToGraph={stats.topTenItemsSorted(10, this.props.participatoryBudget, 'votes')} 
                         variable={'votes'}
                         margin = {{top: 40, right: 20, bottom: 50, left: 320}}
                         xAxisLabel = {'Votes'}
@@ -318,10 +235,10 @@ class Statistics extends Component{
                     <HorizontalBarChart
                         key={'lowCostBarChart'}
                         reference='lowCostBarChart' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.bottomTenItemsSorted(10, this.props.participatoryBudget, 'cost')} 
+                        dataToGraph={stats.bottomTenItemsSorted(10, this.props.participatoryBudget, 'cost')} 
                         variable={'cost'}
                         margin = {{top: 40, right: 50, bottom: 50, left: 320}}
                         xAxisLabel = {'Cost'}
@@ -336,10 +253,10 @@ class Statistics extends Component{
                     <HorizontalBarChart 
                         key={'lowVotesBarChart'}
                         reference='lowVotesBarChart' 
-                        width={1200} 
+                        width={1000} 
                         height={400} 
                         draw={true} 
-                        dataToGraph={this.bottomTenItemsSorted(10, this.props.participatoryBudget, 'votes')} 
+                        dataToGraph={stats.bottomTenItemsSorted(10, this.props.participatoryBudget, 'votes')} 
                         variable={'votes'}
                         margin = {{top: 40, right: 20, bottom: 50, left: 320}}
                         xAxisLabel = {'Votes'}
@@ -354,8 +271,7 @@ class Statistics extends Component{
             
         }
         return(
-            <div>
-                Yo yo here we go this is the statistics page
+            <div>                
                 {data}
             </div>
         );

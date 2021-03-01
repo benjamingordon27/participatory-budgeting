@@ -22,7 +22,8 @@ class ControlsManager extends Component {
     }
 
     componentDidMount(){        
-        this.props.onInitBudget();               
+        if(!this.props.participatoryBudget && !this.props.districts && !this.props.councilMembers)
+            this.props.onInitBudget();           
     }
 
     componentDidUpdate(prevProps, prevState){        
@@ -51,7 +52,7 @@ class ControlsManager extends Component {
         this.setState({selectedDistrict: event.target.value})
     }
 
-    itemsByCategory = (event) => {        
+    itemsByCategory = (event) => {                
         this.setState({selectedCategory: event.target.value})
     }
 
@@ -160,7 +161,7 @@ const mapStateToProps = state => {
         itemYears: state.participatoryBudget.itemYears,
         itemDistricts: state.participatoryBudget.itemDistricts,
 
-        selectedBudgetItems: state.subsets.selectedBudgetItems,
+        selectedBudgetItems: state.subsets.selectedBudgetItems,        
     }
 }
 
@@ -185,7 +186,7 @@ const mapDispatchToProps = dispatch => {
                         minVotes, 
                         maxVotes,
                         councilMember,
-                        )),
+                        )),        
     }
 }
 

@@ -5,15 +5,15 @@ import * as actions from '../../../store/actions/index';
 
 class Legend extends Component {
 
-    filter(category){
-        this.props.clicked(category);
+    filter(category){        
+        this.props.onBudgetFilter(this.props.participatoryBudget,this.props.councilMembers,category,'','','','','','','')        
     }
 
     render(){
         return (
             <div class={classes.Legend}>
                     {Object.keys(this.props.legendMarkers).map(key => (
-                        <div onClick={() => this.props.onBudgetFilter(this.props.participatoryBudget,this.props.councilMembers,key,'','','','','','','')}>
+                        <div onClick={() => this.filter(key)}>
                             {this.props.zoom <=12 ?
                                 <img src={this.props.legendMarkers[key].dot} alt={key}></img>:
                                 <img src={this.props.legendMarkers[key].img} alt={key}></img>
@@ -46,7 +46,7 @@ const mapDispatchToProps = dispatch => {
                         minVotes, 
                         maxVotes,
                         councilMember,
-                        ))
+                        )),        
     }
 }
 

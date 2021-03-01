@@ -18,5 +18,5 @@ export {
     budgetByDistrict,
     budgetByCategory,
     budgetFilter,
-    resetSelectedItems,
+    resetSelectedItems,    
 } from './calculateSubsets';

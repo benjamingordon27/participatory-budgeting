@@ -30,6 +30,8 @@ class HorizontalBarChart extends Component {
         return(
             
             <div className={classes.HorizontalBarChart}>
+                {this.props.description ? <p style={{textAlign: 'center', fontSize: '28px'}}>{this.props.description}</p> : null}
+
                 <svg width={this.props.width} height={this.props.height}>
                     <g transform={`translate(${this.props.margin.left}, ${this.props.margin.top})`}>
                         

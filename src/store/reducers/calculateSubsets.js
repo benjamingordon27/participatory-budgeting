@@ -5,7 +5,7 @@ import {translateCategory, translateCategoryText} from '../../util/translateCate
 const initialState = {            
     selectedBudgetItems: null,
     selectedDistricts: null,
-    action: {},
+    action: {},    
 }
 
 const sortByCategory = (participatoryBudget, category) =>{
@@ -74,12 +74,14 @@ const filterBudget = (participatoryBudget, councilMembers, category, year, distr
 }
 
 const reducer = (state = initialState, action) => {
+    if(action.type === actionTypes.CHANGE_CATEGORY) console.log('action.category', action.category)
+
     switch(action.type){
         case actionTypes.BUDGET_FILTER: return updateObject(state, {selectedBudgetItems: filterBudget(action.budget, action.councilMembers, action.category, action.year, action.district, action.minCost, action.maxCost, action.minVotes, action.maxVotes, action.councilMember), action: {...action}})
         case actionTypes.BUDGET_BY_YEAR: return updateObject(state, {selectedBudgetItems: sortByYear(action.budget, action.year)})
         case actionTypes.BUDGET_BY_DISTRICT: return updateObject(state, {selectedBudgetItems: sortByDistrict(action.budget, action.district)})
         case actionTypes.BUDGET_BY_CATEGORY: return updateObject(state, {selectedBudgetItems: sortByCategory(action.budget, action.category)})
-        case actionTypes.RESET_SELECTED_ITEMS: return updateObject(state, {selectedBudgetItems: []})
+        case actionTypes.RESET_SELECTED_ITEMS: return updateObject(state, {selectedBudgetItems: []})        
         default:
             return state;
     }

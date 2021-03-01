@@ -23,24 +23,12 @@ class LegendManager extends Component {
 const mapStateToProps = state => {
     return {
         zoom: state.setMap.zoom,
-        participatoryBudget: state.participatoryBudget.participatoryBudget,
-        councilMembers: state.participatoryBudget.councilMembers,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {        
-        onBudgetFilter: (budget, councilMembers, category, year, district,minCost, maxCost, minVotes, maxVotes, councilMember) => 
-            dispatch(actions.budgetFilter(budget, councilMembers,
-                        category, 
-                        year, 
-                        district, 
-                        minCost, 
-                        maxCost, 
-                        minVotes, 
-                        maxVotes,
-                        councilMember,
-                        ))
+
     }
 }
 
