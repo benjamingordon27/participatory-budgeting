@@ -5,7 +5,7 @@ import AboutPage from '../AboutPage/AboutPage';
 import ItemsPage from '../ItemsPage/ItemsPage';
 import classes from './HomePage.module.css'
 
-import {Route,Link,Switch} from 'react-router-dom'
+import {BrowserRouter,Route,NavLink,Switch, Redirect, withRouter} from 'react-router-dom'
 
 class HomePage extends Component{
     render(){
@@ -13,22 +13,22 @@ class HomePage extends Component{
             <div className = {classes.HomePage}>
                 <header>
                     <nav>
-                        <ul>                            
-                            <li><Link to='/'>Map</Link></li>
-                            <li><Link to='/statistics'>Statistics</Link></li>
-                            <li><Link to='/items-page'>Items Page</Link></li>
-                            <li><Link to='/about'>About</Link></li>
-                            {/* <li><Link to='/posts' exact>Posts</Link></li>
-                            <li><Link to={{pathname: '/new-post', hash: '#submit', search: '?quick-submit=true'}}>New Post</Link></li> */}
+                        <ul>             
+                            <li><NavLink to='/map'>Map</NavLink></li>
+                            <li><NavLink to='/statistics'>Statistics</NavLink></li>
+                            <li><NavLink to='/items-page'>Items</NavLink></li>
+                            <li><NavLink to='/about'>About</NavLink></li>                            
                         </ul>
                     </nav>
-                </header>  
-                <Switch>                    
-                    <Route path='/statistics' component={Statistics} />
-                    <Route path='/items-page' component={ItemsPage} />
-                    <Route path='/about' component={AboutPage} />
-                    <Route path='/' component={ParticipatoryBudgetMap} />
-                </Switch>                
+                </header>                  
+                    <Switch>                    
+                        <Route exact path='/statistics' component={Statistics} />
+                        <Route exact path='/items-page' component={ItemsPage} />
+                        <Route exact path='/about' component={AboutPage} />                        
+                        <Route path='/map/:category/:name,:latitude,:longitude' component={ParticipatoryBudgetMap} />
+                        <Route path='/map' component={ParticipatoryBudgetMap} />
+                        <Redirect from='/' to='/map'/>
+                    </Switch>                  
             </div>
         );
     }

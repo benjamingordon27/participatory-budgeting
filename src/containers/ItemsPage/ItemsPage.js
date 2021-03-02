@@ -1,13 +1,19 @@
 import React, {Component} from 'react';
+import BudgetItemVisualization from './BudgetItemVisualization/BudgetItemVisualization';
+import ItemsControlsManager from './ItemsControlsManager/ItemsControlsManager';
+import {withRouter} from 'react-router-dom';
 
 class ItemsPage extends Component{
     render(){
         return(
-            <div>
-                Yo yo here we go this is the items page
+            <div>                
+                <div style={{textAlign: 'center', display: 'flex', flexDirection:'row'}}>
+                    <ItemsControlsManager />
+                </div>
+                <BudgetItemVisualization />
             </div>
         );
     }
 }
 
-export default ItemsPage;
+export default withRouter(ItemsPage);

@@ -14,9 +14,6 @@ export {
 } from './setMap';
 
 export {
-    budgetByYear,
-    budgetByDistrict,
-    budgetByCategory,
     budgetFilter,
     resetSelectedItems,    
 } from './calculateSubsets';

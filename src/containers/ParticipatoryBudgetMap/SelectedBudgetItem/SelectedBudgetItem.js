@@ -4,7 +4,7 @@ import * as actions from '../../../store/actions/index';
 
 import BudgetItem from '../../../components/BudgetItem/BudgetItem'
 
-class BudgetItemVisualization extends Component {
+class SelectedBudgetItem extends Component {
 
     setCenter = (item) => {
         if(item.longitude && item.latitude){
@@ -19,41 +19,24 @@ class BudgetItemVisualization extends Component {
         }
     }
 
-    render(){
-
-        console.log(this.props)
-
-        let budgetItems = [];
-        if(this.props.selectedBudgetItems){
-            this.props.selectedBudgetItems.map((item,idx )=> {
-                budgetItems.push( <BudgetItem 
-                            key={idx} 
-                            {...item} 
-                            councilMember={this.findDistrict(item.council_district)} 
-                            clicked={() => this.setCenter(item)}
-                        />
-                    );
-            })
-        }
+    render(){        
         
         return(
-            <div>                                                
-                {this.props.selectedBudgetItems && !this.props.clickedItem ? budgetItems : null}
+            <div>                                                                
                 {this.props.clickedItem ? 
                     <BudgetItem 
                         {...this.props.clickedItem} 
                         councilMember={this.findDistrict(this.props.clickedItem.council_district)} 
                         // clicked={() => this.setCenter(this.props.clickedItem)}
                 />
-                :budgetItems}
+                :<p>Selected item will show up here</p>}
             </div>
         );
     }
 }
 
 const mapStateToProps = state => {
-    return {
-        selectedBudgetItems: state.subsets.selectedBudgetItems,
+    return {        
         councilMembers: state.participatoryBudget.councilMembers,        
         
         center: state.setMap.center,
@@ -69,4 +52,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(BudgetItemVisualization);
+export default connect(mapStateToProps,mapDispatchToProps)(SelectedBudgetItem);

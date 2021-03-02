@@ -6,7 +6,7 @@ import Dropdown from '../../../components/UI/Dropdown/Dropdown';
 import Button from '../../../components/UI/Button/Button';
 import Input from '../../../components/UI/Input/Input';
 
-class ControlsManager extends Component {
+class ItemControlsManager extends Component {
 
     state = {
         firstPageLoad: false,
@@ -161,17 +161,15 @@ const mapStateToProps = state => {
         itemYears: state.participatoryBudget.itemYears,
         itemDistricts: state.participatoryBudget.itemDistricts,
 
-        selectedBudgetItems: state.subsets.selectedBudgetItems,        
+        selectedBudgetItems: state.subsets.selectedBudgetItems,
+        mapLoading: state.subsets.loading,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         onResetSelectedItems: () => dispatch(actions.resetSelectedItems()),
-        onInitBudget: () => dispatch(actions.initBudget()),  
-        onBudgetByYear: (budget, year) => dispatch(actions.budgetByYear(budget,year)),
-        onBudgetByCategory: (budget, category) => dispatch(actions.budgetByCategory(budget,category)),
-        onBudgetByDistrict: (budget, district) => dispatch(actions.budgetByDistrict(budget,district)),
+        onInitBudget: () => dispatch(actions.initBudget()),          
         onZoomIn: () => dispatch(actions.zoomIn()),
         onZoomOut: () => dispatch(actions.zoomOut()),
         onCenter: () => dispatch(actions.center()),
@@ -190,4 +188,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(ControlsManager);
+export default connect(mapStateToProps,mapDispatchToProps)(ItemControlsManager);

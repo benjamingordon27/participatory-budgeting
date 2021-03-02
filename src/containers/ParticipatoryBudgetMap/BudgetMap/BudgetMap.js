@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
+import {withRouter} from 'react-router-dom';
+
 import MapMarker from '../../../components/UI/MapMarker/MapMarker';
 import * as actions from '../../../store/actions/index';
 import {translateCategory} from '../../../util/translateCategory';
@@ -39,6 +41,8 @@ class BudgetMap extends Component{
 
     markerClicked = (center, item) => {        
         this.props.onZoomMarker(center, item);
+        console.log('url',this.props.url)
+        // this.props.history.replace(this.props.url);
     }
 
     render(){     
@@ -60,8 +64,7 @@ class BudgetMap extends Component{
             })
         }
 
-        console.log('[BudgetMap.js]', this.props)
-        console.log('clicked item?', this.props.clickedItem);
+        console.log('[BudgetMap.js] params', this.props.match.params)        
         
 
         return(
@@ -98,6 +101,8 @@ const mapStateToProps = state => {
         zoom: state.setMap.zoom,
         clickedItem: state.setMap.clickedItem,
         selectedBudgetItems: state.subsets.selectedBudgetItems,
+
+        url: state.setMap.url,
     }
 }
 
@@ -110,4 +115,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(BudgetMap);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BudgetMap));
