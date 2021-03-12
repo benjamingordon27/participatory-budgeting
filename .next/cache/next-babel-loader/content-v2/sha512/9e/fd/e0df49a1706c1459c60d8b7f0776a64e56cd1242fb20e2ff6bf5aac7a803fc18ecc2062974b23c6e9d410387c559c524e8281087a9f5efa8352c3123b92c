@@ -1,0 +1,1 @@
+{"ast":null,"code":"export const participatoryBudget = '/resource/wwhr-5ven.json';\nexport const cityCouncilMembers = 'resource/uvw5-9znb.json';\nexport const cityCouncilDistricts = 'api/geospatial/yusd-j4xi?method=export&format=GeoJSON';","map":null,"metadata":{},"sourceType":"module"}

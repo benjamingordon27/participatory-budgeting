@@ -1,0 +1,1 @@
+{"ast":null,"code":"export var priceFormatter = new Intl.NumberFormat('en-US', {\n  style: 'currency',\n  currency: 'USD'\n});\nexport var numberFormatter = function numberFormatter(num) {\n  return num.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, \",\");\n};","map":null,"metadata":{},"sourceType":"module"}

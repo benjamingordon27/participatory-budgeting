@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { jsx as _jsx } from \"react/jsx-runtime\";\nimport React from 'react';\nimport classes from './Button.module.css';\n\nconst button = props => /*#__PURE__*/_jsx(\"button\", {\n  className: classes.Button,\n  onClick: props.clicked,\n  children: props.message\n});\n\nexport default button;","map":null,"metadata":{},"sourceType":"module"}
