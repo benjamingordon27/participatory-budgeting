@@ -65,8 +65,7 @@ const map = (props) => {
     console.log('map props',props)
     let output =
         <GoogleMapReact
-                    // bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN, v: '3.31', }}                                        
-                    bootstrapURLKeys={{ key: 'AIzaSyDqqXhc0D85f1gaAYD1tP718D4iH4RSiio', v: '3.31', }}                    
+                    bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN, v: '3.31', }}                                                            
                     defaultCenter={props.defaultCenter}
                     center={{lat: Number(props.center.lat), lng: Number(props.center.lng)}}
                     zoom={props.zoom}
