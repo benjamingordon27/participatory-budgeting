@@ -21,7 +21,8 @@ class ItemControlsManager extends Component {
         councilMember: '',
     }
 
-    componentDidMount(){        
+    componentDidMount(){      
+        this.setState({firstPageLoad: false});
         if(!this.props.participatoryBudget && !this.props.districts && !this.props.councilMembers)
             this.props.onInitBudget();           
     }

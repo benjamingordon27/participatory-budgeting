@@ -21,13 +21,15 @@ class MapControlsManager extends Component {
         councilMember: '',
     }
 
-    componentDidMount(){        
-        if(!this.props.participatoryBudget && !this.props.districts && !this.props.councilMembers)
-            this.props.onInitBudget();           
+    componentDidMount(){                
+        this.setState({firstPageLoad: false});
+        if(!this.props.participatoryBudget && !this.props.districts && !this.props.councilMembers){
+            this.props.onInitBudget();
+        }            
     }
 
     componentDidUpdate(prevProps, prevState){        
-
+        
         if(!this.state.firstPageLoad && this.props.participatoryBudget){
             this.props.onBudgetFilter(this.props.participatoryBudget, this.props.councilMembers,
                 this.state.selectedCategory, 
@@ -42,6 +44,15 @@ class MapControlsManager extends Component {
 
             this.setState({firstPageLoad: true}) 
         }
+    }
+
+    checkSelected = (array) => {
+        Object.keys(array).map(item => {
+            if(array[item] !== ''){
+                return false;
+            }
+        })
+        return true;
     }
 
     itemsByYear = (event) => {                
@@ -102,7 +113,9 @@ class MapControlsManager extends Component {
             councilMember: '',
         })
 
-        this.props.onResetSelectedItems();
+        // this.props.onResetSelectedItems();
+        this.props.onInitBudget();
+
     }
 
     render(){

@@ -6,7 +6,8 @@ export const resetSelectedItems = () => {
     }
 }
 
-export const budgetFilter = (budget, councilMembers, category, year, district, minCost, maxCost, minVotes, maxVotes, councilMember) => {    
+export const budgetFilter = (budget, councilMembers, category, year, district, minCost, maxCost, minVotes, maxVotes, councilMember) => {        
+
     return {
         type: actionTypes.BUDGET_FILTER,
         budget: budget,
