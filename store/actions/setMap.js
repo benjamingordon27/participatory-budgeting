@@ -26,6 +26,12 @@ export const center = () => {
     }
 }
 
+export const resetClickedItem = () => {
+    return {
+        type: actionTypes.RESET_CLICKED_ITEM,
+    }
+}
+
 export const showDistrictsHelper = () => {
     console.log('show districts helper')
     return {

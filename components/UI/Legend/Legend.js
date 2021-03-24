@@ -3,6 +3,7 @@ import classes from './Legend.module.css'
 import {connect} from 'react-redux';
 import * as actions from '../../../store/actions/index';
 import Image from 'next/image';
+import Link from 'next/link';
 
 class Legend extends Component {
 
@@ -14,13 +15,15 @@ class Legend extends Component {
         return (
             <div className={classes.Legend}>
                     {Object.keys(this.props.legendMarkers).map(key => (
-                        <div onClick={() => this.filter(key)}>
-                            {this.props.zoom <=12 ?
-                                <Image width={500} height={500} src={this.props.legendMarkers[key].dot} alt={key} />:
-                                <Image width={500} height={500} src={this.props.legendMarkers[key].img} alt={key} />
-                            }                        
-                            {' '}{key}
-                        </div>
+                        <Link href = {'/map/?id=2&category='+key}>
+                            <div onClick={() => this.filter(key)}>
+                                {this.props.zoom <=12 ?
+                                    <Image width={500} height={500} src={this.props.legendMarkers[key].dot} alt={key} />:
+                                    <Image width={500} height={500} src={this.props.legendMarkers[key].img} alt={key} />
+                                }                        
+                                {' '}{key}
+                            </div>
+                        </Link>
                     ))}
                 
             </div>

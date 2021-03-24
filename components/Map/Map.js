@@ -62,7 +62,7 @@ const handleApiLoaded = (map, maps, coords, selectedDistricts, councilMembers, b
 }
 
 const map = (props) => {
-    console.log('map props',props)
+    // console.log('map props',props)
     let output =
         <GoogleMapReact
                     bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_TOKEN, v: '3.31', }}                                                            

@@ -19,6 +19,8 @@ class MapControlsManager extends Component {
         minVotes: '',
         maxVotes: '',
         councilMember: '',
+
+        query: '',
     }
 
     componentDidMount(){                
@@ -46,6 +48,32 @@ class MapControlsManager extends Component {
         }
     }
 
+    getQuery = () => {
+        var newQuery = '';
+        if(this.state.selectedYear !== '')
+            newQuery += 'year='+this.state.selectedYear+'&'
+        if(this.state.selectedCategory !== '')
+            newQuery += 'category='+this.state.selectedCategory+'&'
+        if(this.state.selectedDistrict !== '')
+            newQuery += 'district='+this.state.selectedDistrict+'&'
+        if(this.state.minCost !== '')
+            newQuery += 'minCost='+this.state.minCost+'&'
+        if(this.state.maxCost !== '')
+            newQuery += 'maxCost='+this.state.maxCost+'&'
+        if(this.state.minVotes !== '')
+            newQuery += 'minVotes='+this.state.minVotes+'&'
+        if(this.state.maxVotes !== '')
+            newQuery += 'maxVotes='+this.state.maxVotes+'&'
+        // if(newQuery.charAt(newQuery.length -1) === '&')
+        if(newQuery.length > 0){
+            newQuery = '?id=2&' + newQuery;
+            newQuery = newQuery.substring(0, newQuery.length - 1);
+        }
+        
+        // this.setState({query: newQuery});
+        return newQuery;
+    }
+
     checkSelected = (array) => {
         Object.keys(array).map(item => {
             if(array[item] !== ''){
@@ -53,6 +81,12 @@ class MapControlsManager extends Component {
             }
         })
         return true;
+    }
+
+    submit = (budget, councilMembers, category, year, district,minCost, maxCost, minVotes, maxVotes, councilMember) => {        
+        // this.props.onCenter();
+        this.props.onResetClickedItem();
+        this.props.onBudgetFilter(budget, councilMembers, category, year, district,minCost, maxCost, minVotes, maxVotes, councilMember);
     }
 
     itemsByYear = (event) => {                
@@ -124,7 +158,8 @@ class MapControlsManager extends Component {
             data = <Spinner />;
         }
 
-        // console.log('state',this.state)
+        console.log('state',this.state)
+        console.log('query',this.getQuery())
         
         return (
             <div>
@@ -146,8 +181,8 @@ class MapControlsManager extends Component {
                         <Input label='Maximum votes' handleChange={this.maxVotesState} step='1'/>
 
                         <br></br>
-                        <Button message={'Submit'} clicked = {() => 
-                            this.props.onBudgetFilter(this.props.participatoryBudget, this.props.councilMembers,
+                        <Button message={'Submit'} link={'/map'+this.getQuery()} clicked = {() => 
+                            this.submit(this.props.participatoryBudget, this.props.councilMembers,
                                         this.state.selectedCategory, 
                                         this.state.selectedYear, 
                                         this.state.selectedDistrict, 
@@ -157,7 +192,7 @@ class MapControlsManager extends Component {
                                         this.state.maxVotes,   
                                         this.state.councilMember,                 
                                         )}/>                                                
-                        <Button message={'Clear'} clicked ={() => this.clearInput()} />
+                        <Button message={'Clear'} link='/map' clicked ={() => this.clearInput()} />
                     </div>
                 :null}
                 {data}
@@ -187,8 +222,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => {
-    return {
+    return {        
         onResetSelectedItems: () => dispatch(actions.resetSelectedItems()),
+        onResetClickedItem: () => dispatch(actions.resetClickedItem()),
         onInitBudget: () => dispatch(actions.initBudget()),          
         onZoomIn: () => dispatch(actions.zoomIn()),
         onZoomOut: () => dispatch(actions.zoomOut()),

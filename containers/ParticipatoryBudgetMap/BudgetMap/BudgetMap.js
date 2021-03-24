@@ -14,13 +14,14 @@ class BudgetMap extends Component{
         firstPageLoad: false,
     } 
 
-    componentDidMount(){
+    componentDidMount(){               
         if(this.props.districts){
             this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
         }
     }
 
     componentDidUpdate(prevProps, prevState){
+        //when first loaded, set the map up properly to the full map, and we have now loaded
         if(!this.state.firstPageLoad && this.props.loaded){
             this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
             this.setState({firstPageLoad: true})
@@ -30,6 +31,18 @@ class BudgetMap extends Component{
             this.props.onResetMap();            
             this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);     
         }    
+
+        if(this.props.participatoryBudget && this.props.router.query && (this.props.participatoryBudget !== prevProps.participatoryBudget)){            
+            if(this.props.router.query.id === '1'){                
+                this.props.onFindItem(this.props.participatoryBudget, this.props.router.query.lat, this.props.router.query.lng, this.props.router.query.title);
+            }else if(this.props.router.query.id === '2'){                
+                this.props.onBudgetFilterFromURL(this.props.participatoryBudget, this.props.router.query);            
+            }            
+        }        
+
+        if( this.props.item !== undefined && (this.props.item !== prevProps.item) ){
+            this.markerClicked({lat: this.props.item.latitude, lng: this.props.item.longitude}, this.props.item)
+        }
         
         if((this.props.showDistricts !== prevProps.showDistricts)){
             console.log('[BudgetMap.js] show districts')
@@ -38,13 +51,13 @@ class BudgetMap extends Component{
     }
 
     markerClicked = (center, item) => {        
-        this.props.onZoomMarker(center, item);
-        console.log('url',this.props.url)
+        this.props.onZoomMarker(center, item);        
         // this.props.history.replace(this.props.url);
     }
 
-    render(){     
-        
+    render(){    
+        console.log('[BudgetMap.js]', this.props)
+
         let markers = [];    
         if(this.props.selectedBudgetItems){                    
             this.props.selectedBudgetItems.filter(item => item.latitude && item.longitude).map((item,idx) => {
@@ -60,10 +73,7 @@ class BudgetMap extends Component{
                     clicked={() => this.markerClicked({ lat: item.latitude, lng: item.longitude }, item)}/>
                 );
             })
-        }
-
-        // console.log('[BudgetMap.js] params', this.props.match.params)        
-        
+        }            
 
         return(
             <div style={{ height: '87vh', width: '100%' }}>
@@ -84,7 +94,7 @@ class BudgetMap extends Component{
 const mapStateToProps = state => {
     return {
         currItem: state.participatoryBudget.currItem,
-        participatoryBudget: state.participatoryBudget.participatoryBudget,        
+        participatoryBudget: state.participatoryBudget.participatoryBudget,   
         councilMemberLoading: state.participatoryBudget.councilMemberLoading,
         error: state.participatoryBudget.error,
         councilMembers: state.participatoryBudget.councilMembers,
@@ -98,9 +108,10 @@ const mapStateToProps = state => {
         center: state.setMap.center,
         zoom: state.setMap.zoom,
         clickedItem: state.setMap.clickedItem,
+        item: state.subsets.item,
         selectedBudgetItems: state.subsets.selectedBudgetItems,
 
-        url: state.setMap.url,
+        url: state.setMap.url,        
     }
 }
 
@@ -109,7 +120,10 @@ const mapDispatchToProps = dispatch => {
         onSetMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems) => dispatch(actions.setMap(districts, selectedDistricts, councilMembers, selectedBudgetItems)),  
         onUpdateMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems, showDistricts) => dispatch(actions.updateMap(districts, selectedDistricts, councilMembers, selectedBudgetItems, showDistricts)),  
         onResetMap: () => dispatch(actions.resetMap()),
-        onZoomMarker: (center, item) => dispatch(actions.zoomMarker(center, item)),           
+        onZoomMarker: (center, item) => dispatch(actions.zoomMarker(center, item)),   
+        
+        onFindItem: (budget, lat, lng, title) => dispatch(actions.findItem(budget, lat, lng, title)),
+        onBudgetFilterFromURL: (budget, query) => dispatch(actions.budgetFilterFromURL(budget, query)),
     }
 }
 

@@ -6,6 +6,16 @@ export const resetSelectedItems = () => {
     }
 }
 
+export const findItem = (budget, lat, lng, title) => {
+    return {
+        type: actionTypes.FIND_ITEM,
+        budget: budget,
+        lat: lat,
+        lng: lng,
+        title: title,
+    }
+}
+
 export const budgetFilter = (budget, councilMembers, category, year, district, minCost, maxCost, minVotes, maxVotes, councilMember) => {        
 
     return {
@@ -20,5 +30,15 @@ export const budgetFilter = (budget, councilMembers, category, year, district, m
         minVotes: minVotes,
         maxVotes: maxVotes,
         councilMember: councilMember,
+    }
+}
+
+
+export const budgetFilterFromURL = (budget, query) => {        
+
+    return {
+        type: actionTypes.BUDGET_FILTER_FROM_URL,
+        budget: budget,
+        query: query,
     }
 }

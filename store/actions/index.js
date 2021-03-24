@@ -11,9 +11,12 @@ export {
     zoomOut,    
     center,
     showDistricts,
+    resetClickedItem,
 } from './setMap';
 
 export {
     budgetFilter,
-    resetSelectedItems,    
+    resetSelectedItems,  
+    findItem,
+    budgetFilterFromURL,  
 } from './calculateSubsets';
