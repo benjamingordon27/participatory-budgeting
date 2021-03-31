@@ -19,4 +19,5 @@ export {
     resetSelectedItems,  
     findItem,
     budgetFilterFromURL,  
+    resetFindItem,
 } from './calculateSubsets';

@@ -10,24 +10,26 @@ class SelectedBudgetItem extends Component {
     }
 
     componentDidUpdate(prevProps, prevState){
-        if(!this.props.clickedItem && (this.props.clickedItem !== prevProps.clickedItem)){            
-            this.props.onFindItem(this.props.participatoryBudget, this.props.router.query.lat, this.props.router.query.lng, this.props.router.query.title);
-        }
+        // if(this.props.participatoryBudget && this.props.councilMembers && !this.props.clickedItem && (this.props.clickedItem !== prevProps.clickedItem)
+        //     && this.props.router.id === 1){
+        //     this.props.onFindItem(this.props.participatoryBudget, this.props.router.query.lat, this.props.router.query.lng, this.props.router.query.title);
+        // }
         
-        if(this.props.item && !this.props.clickedItem){                 
-            this.props.onZoomMarker({lat: this.props.item.latitude, lng: this.props.item.longitude}, this.props.item)
-        }
+        // if(this.props.item && !this.props.clickedItem){                 
+            // this.props.onZoomMarker({lat: this.props.item.latitude, lng: this.props.item.longitude}, this.props.item)
+        // }
     }
 
     findDistrict = (district) => {
-        if(this.props.councilMembers){                        
+        if(this.props.councilMembers){
+            console.log('district', district)
             var councilMember = this.props.councilMembers.filter(item => item.district === district.match(/\d+/)[0]);            
             return councilMember;
         }
     }
 
     render(){        
-        console.log('[SelectedBudgetItem.js]', this.props.clickedItem)
+        console.log('[SelectedBudgetItem.js]', this.props)
         return(
             <div>                                                                
                 {this.props.clickedItem ? 
@@ -46,7 +48,9 @@ const mapStateToProps = state => {
         center: state.setMap.center,
         clickedItem: state.setMap.clickedItem,
         
-        item: state.subsets.item,
+        // item: state.subsets.item,
+
+        zoom: state.setMap.zoom,
 
         participatoryBudget: state.participatoryBudget.participatoryBudget,
         councilMembers: state.participatoryBudget.councilMembers,

@@ -7,16 +7,15 @@ import Link from 'next/link';
 const MapMarker = (props) => {  
   let width = props.width;
   let height = props.height;
-  let transform = 'translate(-50%, -50%)';
-
+  let transform = 'translate(-50%, -50%)';  
 
   //if the marker is the center, double the width and update the transform
-  if(props.center.lat === props.lat && props.center.lng === props.lng){
+  if(Number(props.center.lat) === Number(props.lat) && Number(props.center.lng) === Number(props.lng) ){    
     width = width.split('px')[0]*2+'px';
     height = height.split('px')[0]*2+'px';
     transform = 'translate(-50%, -100%)'
-  }
-  
+  }  
+
   return (
     <Link href={'/map/?id=1&title='+props.item.title+'&lat='+props.lat+'&lng='+props.lng}>
         <div className={classes.MapMarker} lat={props.lat} lng={props.lng} onClick={props.clicked}>

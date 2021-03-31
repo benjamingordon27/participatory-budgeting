@@ -33,6 +33,8 @@ class MapControlsManager extends Component {
     componentDidUpdate(prevProps, prevState){        
         
         if(!this.state.firstPageLoad && this.props.participatoryBudget){
+            console.log('we have loaded and the budget is here')
+
             this.props.onBudgetFilter(this.props.participatoryBudget, this.props.councilMembers,
                 this.state.selectedCategory, 
                 this.state.selectedYear, 
@@ -83,10 +85,14 @@ class MapControlsManager extends Component {
         return true;
     }
 
-    submit = (budget, councilMembers, category, year, district,minCost, maxCost, minVotes, maxVotes, councilMember) => {        
-        // this.props.onCenter();
-        this.props.onResetClickedItem();
+    submit = (budget, councilMembers, category, year, district,minCost, maxCost, minVotes, maxVotes, councilMember) => {                
+        console.log('are we submitting?')
+        
+        this.props.onResetMap();
+        this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
         this.props.onBudgetFilter(budget, councilMembers, category, year, district,minCost, maxCost, minVotes, maxVotes, councilMember);
+        this.props.onResetClickedItem();        
+        this.props.onCenter();
     }
 
     itemsByYear = (event) => {                
@@ -159,7 +165,7 @@ class MapControlsManager extends Component {
         }
 
         console.log('state',this.state)
-        console.log('query',this.getQuery())
+        console.log('props',this.props)
         
         return (
             <div>
@@ -216,13 +222,20 @@ const mapStateToProps = state => {
         itemYears: state.participatoryBudget.itemYears,
         itemDistricts: state.participatoryBudget.itemDistricts,
 
-        selectedBudgetItems: state.subsets.selectedBudgetItems,
-        mapLoading: state.subsets.loading,
+        selectedBudgetItems: state.setMap.selectedBudgetItems,
+        mapLoading: state.setMap.loading,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {        
+        onSetMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems) => dispatch(actions.setMap(districts, selectedDistricts, councilMembers, selectedBudgetItems)),  
+        onUpdateMap: (districts, selectedDistricts, councilMembers, selectedBudgetItems, showDistricts) => dispatch(actions.updateMap(districts, selectedDistricts, councilMembers, selectedBudgetItems, showDistricts)),  
+        onResetMap: () => dispatch(actions.resetMap()),
+        onZoomMarker: (center, item) => dispatch(actions.zoomMarker(center, item)),   
+        onResetClickedItem: () => dispatch(actions.resetClickedItem()),
+        onResetFindItem: () => dispatch(actions.resetFindItem()),
+        
         onResetSelectedItems: () => dispatch(actions.resetSelectedItems()),
         onResetClickedItem: () => dispatch(actions.resetClickedItem()),
         onInitBudget: () => dispatch(actions.initBudget()),          

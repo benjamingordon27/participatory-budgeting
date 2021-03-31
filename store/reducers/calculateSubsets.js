@@ -72,7 +72,7 @@ const budgetFilterFromURL = (budget, query) => {
         newBudget = newBudget.filter(item => Number(item.votes) <= Number(query.maxVotes));
 
     return {
-        selectedBudgetItems: newBudget,
+        selectedBudgetItems: newBudget,        
     }
 }
 
@@ -84,6 +84,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.BUDGET_FILTER_FROM_URL: return updateObject(state, budgetFilterFromURL(action.budget, action.query))
         case actionTypes.RESET_SELECTED_ITEMS: return updateObject(state, {selectedBudgetItems: []})        
         case actionTypes.FIND_ITEM: return updateObject(state, {item: findItem(action.budget, action.lat, action.lng, action.title)})
+        case actionTypes.RESET_FIND_ITEM: return updateObject(state, {item: null})
         default:
             return state;
     }

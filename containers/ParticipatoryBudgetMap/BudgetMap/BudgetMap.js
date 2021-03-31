@@ -16,38 +16,68 @@ class BudgetMap extends Component{
 
     componentDidMount(){               
         if(this.props.districts){
-            this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
-        }
+            this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);            
+        }        
     }
 
     componentDidUpdate(prevProps, prevState){
         //when first loaded, set the map up properly to the full map, and we have now loaded
-        if(!this.state.firstPageLoad && this.props.loaded){
-            this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
+        if(!this.state.firstPageLoad && this.props.loaded){       
+            console.log('we loaded and the first page hasnt loaded')
+            
+            // this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
             this.setState({firstPageLoad: true})
+
+            if(this.props.router.query){
+                if(this.props.router.query.id === '1'){            
+                    console.log('did we load', this.props.router.query.id)    
+                    console.log('did we load', this.props.router.query.lat, this.props.router.query.lng, this.props.router.query.title)    
+                    this.props.onFindItem(this.props.participatoryBudget, this.props.router.query.lat, this.props.router.query.lng, this.props.router.query.title);
+                }else if(this.props.router.query.id === '2'){                
+                    console.log('did we load', this.props.router.query.id)    
+                    this.props.onBudgetFilterFromURL(this.props.participatoryBudget, this.props.router.query);            
+                }  
+            }
         }
 
-        if((prevProps.selectedBudgetItems !== this.props.selectedBudgetItems)){
-            this.props.onResetMap();            
-            this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);     
-        }    
+        // if((prevProps.selectedBudgetItems !== this.props.selectedBudgetItems)){
+        //     console.log('selected budget items changed')
+        //     // if(this.props.router.query){
+        //     //     if(this.props.router.query.id === '')
+        //     // }
 
-        if(this.props.participatoryBudget && this.props.router.query && (this.props.participatoryBudget !== prevProps.participatoryBudget)){            
-            if(this.props.router.query.id === '1'){                
-                this.props.onFindItem(this.props.participatoryBudget, this.props.router.query.lat, this.props.router.query.lng, this.props.router.query.title);
-            }else if(this.props.router.query.id === '2'){                
-                this.props.onBudgetFilterFromURL(this.props.participatoryBudget, this.props.router.query);            
-            }            
-        }        
+        //     // this.props.onResetMap();                        
+        //     // this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);     
+        //     // this.props.onResetClickedItem();
+        //     // this.props.onResetFindItem();
+        //     // this.props.onCenter();            
+        // }    
 
-        if( this.props.item !== undefined && (this.props.item !== prevProps.item) ){
-            this.markerClicked({lat: this.props.item.latitude, lng: this.props.item.longitude}, this.props.item)
-        }
+        // if(this.props.participatoryBudget && this.props.router.query && !this.props.clickedItem){
+        //     console.log('router and no clicked item')
+
+        //     if(this.props.router.query.id === '1'){            
+        //         console.log('did we load', this.props.router.query.id)    
+        //         console.log('did we load', this.props.router.query.lat, this.props.router.query.lng, this.props.router.query.title)    
+        //         this.props.onFindItem(this.props.participatoryBudget, this.props.router.query.lat, this.props.router.query.lng, this.props.router.query.title);
+        //     }
+        // }
+
+        // if(this.props.participatoryBudget && this.props.router.query && (this.props.participatoryBudget !== prevProps.participatoryBudget)){            
+        //     console.log('router?')
+        //     if(this.props.router.query.id === '1'){            
+        //         console.log('did we load', this.props.router.query.id)    
+        //         this.props.onFindItem(this.props.participatoryBudget, this.props.router.query.lat, this.props.router.query.lng, this.props.router.query.title);
+        //     }else if(this.props.router.query.id === '2'){                
+        //         console.log('did we load', this.props.router.query.id)    
+        //         this.props.onBudgetFilterFromURL(this.props.participatoryBudget, this.props.router.query);            
+        //     }            
+        // }
         
-        if((this.props.showDistricts !== prevProps.showDistricts)){
-            console.log('[BudgetMap.js] show districts')
+        // if((this.props.showDistricts !== prevProps.showDistricts)){
+        //     console.log('[BudgetMap.js] show districts')
 
-        }  
+        // }  
     }
 
     markerClicked = (center, item) => {        
@@ -59,7 +89,8 @@ class BudgetMap extends Component{
         console.log('[BudgetMap.js]', this.props)
 
         let markers = [];    
-        if(this.props.selectedBudgetItems){                    
+        if(this.props.selectedBudgetItems){                
+
             this.props.selectedBudgetItems.filter(item => item.latitude && item.longitude).map((item,idx) => {
                 markers.push(<MapMarker 
                     center={this.props.center}
@@ -69,7 +100,7 @@ class BudgetMap extends Component{
                     item={translateCategory(item)}
                     width={'30px'}
                     height={'30px'}
-                    zoom={this.props.zoom} ////figure out how to change on zoom change, might have to be rendered not in an array in component but in render itself
+                    zoom={this.props.zoom}
                     clicked={() => this.markerClicked({ lat: item.latitude, lng: item.longitude }, item)}/>
                 );
             })
@@ -108,8 +139,8 @@ const mapStateToProps = state => {
         center: state.setMap.center,
         zoom: state.setMap.zoom,
         clickedItem: state.setMap.clickedItem,
-        item: state.subsets.item,
-        selectedBudgetItems: state.subsets.selectedBudgetItems,
+        // item: state.setMap.item,
+        selectedBudgetItems: state.setMap.selectedBudgetItems,
 
         url: state.setMap.url,        
     }
@@ -124,6 +155,11 @@ const mapDispatchToProps = dispatch => {
         
         onFindItem: (budget, lat, lng, title) => dispatch(actions.findItem(budget, lat, lng, title)),
         onBudgetFilterFromURL: (budget, query) => dispatch(actions.budgetFilterFromURL(budget, query)),
+
+        onResetClickedItem: () => dispatch(actions.resetClickedItem()),
+        onResetFindItem: () => dispatch(actions.resetFindItem()),
+
+        onCenter: () => dispatch(actions.center()),
     }
 }
 

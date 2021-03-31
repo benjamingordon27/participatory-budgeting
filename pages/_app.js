@@ -14,7 +14,7 @@ import setMap from '../store/reducers/setMap';
 
 const rootReducer = combineReducers({
   participatoryBudget: participatoryBudgetReducer,
-  subsets: calculateSubsetsReducer,
+  // subsets: calculateSubsetsReducer,
   setMap: setMap,
   
 })

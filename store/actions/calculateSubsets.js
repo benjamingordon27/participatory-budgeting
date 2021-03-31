@@ -33,6 +33,12 @@ export const budgetFilter = (budget, councilMembers, category, year, district, m
     }
 }
 
+export const resetFindItem = () => {
+    return {
+        type: actionTypes.RESET_FIND_ITEM,
+    }
+}
+
 
 export const budgetFilterFromURL = (budget, query) => {        
 
