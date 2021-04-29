@@ -14,7 +14,7 @@ class BudgetMap extends Component{
         firstPageLoad: false,
     } 
 
-    componentDidMount(){               
+    componentDidMount(){
         if(this.props.districts){
             this.props.onSetMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);            
         }        

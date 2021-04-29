@@ -30,6 +30,8 @@ class ItemControlsManager extends Component {
     componentDidUpdate(prevProps, prevState){        
 
         if(!this.state.firstPageLoad && this.props.participatoryBudget){
+            console.log('we have loaded and the budget is here')
+
             this.props.onBudgetFilter(this.props.participatoryBudget, this.props.councilMembers,
                 this.state.selectedCategory, 
                 this.state.selectedYear, 
@@ -43,6 +45,51 @@ class ItemControlsManager extends Component {
 
             this.setState({firstPageLoad: true}) 
         }
+    }
+
+    getQuery = () => {
+        var newQuery = '';
+        if(this.state.selectedYear !== '')
+            newQuery += 'year='+this.state.selectedYear+'&'
+        if(this.state.selectedCategory !== '')
+            newQuery += 'category='+this.state.selectedCategory+'&'
+        if(this.state.selectedDistrict !== '')
+            newQuery += 'district='+this.state.selectedDistrict+'&'
+        if(this.state.minCost !== '')
+            newQuery += 'minCost='+this.state.minCost+'&'
+        if(this.state.maxCost !== '')
+            newQuery += 'maxCost='+this.state.maxCost+'&'
+        if(this.state.minVotes !== '')
+            newQuery += 'minVotes='+this.state.minVotes+'&'
+        if(this.state.maxVotes !== '')
+            newQuery += 'maxVotes='+this.state.maxVotes+'&'
+        // if(newQuery.charAt(newQuery.length -1) === '&')
+        if(newQuery.length > 0){
+            newQuery = '?id=2&' + newQuery;
+            newQuery = newQuery.substring(0, newQuery.length - 1);
+        }
+        
+        // this.setState({query: newQuery});
+        return newQuery;
+    }
+
+    heckSelected = (array) => {
+        Object.keys(array).map(item => {
+            if(array[item] !== ''){
+                return false;
+            }
+        })
+        return true;
+    }
+
+    submit = (budget, councilMembers, category, year, district,minCost, maxCost, minVotes, maxVotes, councilMember) => {                
+        console.log('are we submitting?')
+        
+        this.props.onResetMap();
+        this.props.onUpdateMap(this.props.districts, this.props.selectedDistricts, this.props.councilMembers, this.props.selectedBudgetItems);
+        this.props.onBudgetFilter(budget, councilMembers, category, year, district,minCost, maxCost, minVotes, maxVotes, councilMember);
+        this.props.onResetClickedItem();        
+        this.props.onCenter();
     }
 
     itemsByYear = (event) => {                
@@ -109,12 +156,6 @@ class ItemControlsManager extends Component {
         
         return (
             <div>
-
-                <Button message={'Zoom In'} clicked={this.props.onZoomIn}/>
-                <Button message={'Zoom Out'} clicked={this.props.onZoomOut}/>  
-                <Button message={'Center'} clicked={this.props.onCenter}/>  
-                {/* {this.props.districts ?<Button message={'Show Districts'} clicked={this.props.onShowDistricts}/> :null} */}
-
                 {this.props.participatoryBudget && this.props.districts && this.props.councilMembers && this.props.itemCategories ?
                     <div>
                         <Dropdown message={'Items by Council Member'} title= {'Council Member'} list={this.props.councilMembersList} handleChange={this.councilMemberState}/>
@@ -127,7 +168,7 @@ class ItemControlsManager extends Component {
                         <Input label='Maximum votes' handleChange={this.maxVotesState} step='1'/>
 
                         <br></br>
-                        <Button message={'Submit'} clicked = {() => 
+                        <Button message={'Submit'} link={'/items'+this.getQuery()} clicked = {() => 
                             this.props.onBudgetFilter(this.props.participatoryBudget, this.props.councilMembers,
                                         this.state.selectedCategory, 
                                         this.state.selectedYear, 
@@ -162,8 +203,7 @@ const mapStateToProps = state => {
         itemYears: state.participatoryBudget.itemYears,
         itemDistricts: state.participatoryBudget.itemDistricts,
 
-        selectedBudgetItems: state.subsets.selectedBudgetItems,
-        mapLoading: state.subsets.loading,
+        selectedBudgetItems: state.setMap.selectedBudgetItems,        
     }
 }
 
